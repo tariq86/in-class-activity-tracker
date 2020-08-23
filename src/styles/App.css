@@ -1,0 +1,15 @@
+
+
+.jumbotron-header-btn {
+    display: inline;
+    position: relative;
+    top: -2rem;
+}
+
+.jumbotron-header-btn.left {
+    left: -50%;
+}
+
+.jumbotron-header-btn.right {
+    right: -50%;
+}
