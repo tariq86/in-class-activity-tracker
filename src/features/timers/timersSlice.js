@@ -18,7 +18,6 @@ export const timerSlice = createSlice({
       state.all.push(action.payload);
     },
     removeTimer: (state, action) => {
-      console.log("Hello? Is it me you're looking for?");
       state.all = state.all.filter(timer => timer.id !== action.payload.id);
     },
     setActiveTimer: (state, action) => {

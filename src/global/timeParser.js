@@ -27,7 +27,6 @@ export const parseHmsFromSecs = (secs) => {
  */
 export const secondsToHmsString = (secs) => {
     const parts = parseHmsFromSecs(secs);
-    console.log("Total Parts:", parts);
     let out = '';
     if (parts.hours > 0) {
         out += parts.hours;
