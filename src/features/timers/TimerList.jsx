@@ -9,7 +9,6 @@ export default function TimerList() {
     const history = useHistory();
     const dispatch = useDispatch();
     const allTimers = useSelector(state => state.timers.all);
-    console.log("allTimers: ", allTimers);
 
     const renderTimers = () => {
         return allTimers.map(timer => <TimerListItem timer={timer} key={timer.id} />)

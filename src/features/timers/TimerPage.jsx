@@ -17,23 +17,50 @@ export default function TimerPage() {
     const history = useHistory();
     const { id } = useParams();
     let totalSeconds = 0;
-    // Get the correct timer from the store
+    // Get the current timer from the store
     let timer = useSelector(state => {
         return state.timers.all.find(timer => {
             return timer.id === id;
         });
     });
-    // Set the initial seconds once on load
+    /**
+     * Go to the "All Timers" route
+     * @returns {null}
+     */
+    const goToAllTimersRoute = () => {
+        history.push('/timers');
+        return null;
+    };
+    // Set the initial seconds once on load, and also
+    // clear out the intervalId during teardown
     useEffect(() => {
         setSecondsLeft(totalSeconds);
-    }, []);
-    // Send the user back if a timer wasn't found using the ID route parameter
+        return () => {
+            if (intervalId === null) {
+                return;
+            }
+            console.log("cleanup function; clearing interval: ", intervalId);
+            clearInterval(intervalId);
+            setIntervalId(null);
+        }
+    }, [totalSeconds, intervalId]);
+    // Send the user to the "All Timers" route if a timer wasn't found using the ID route parameter
     if (!timer) {
-        history.goBack();
-        return null;
+        return goToAllTimersRoute();
     }
     // Set the totalSeconds variable to the timer's total seconds
     totalSeconds = timer.seconds;
+    /**
+     * Handle timer/countdown completion here!
+     * TODO: run any configured alerters here (i.e. "flash Hue lights")
+     */
+    const handleTimerComplete = () => {
+        clearInterval(intervalId);
+        setIntervalId(null);
+        isTimerActive = false;
+        isTimerStarted = false;
+        alert("We made it!");
+    };
     /**
      * Start the countdown timer!
      */
@@ -43,9 +70,7 @@ export default function TimerPage() {
             seconds = seconds - 1;
             setSecondsLeft(seconds);
             if (seconds <= 0) {
-                clearInterval(id);
-                // TODO: flash the lights here
-                alert("We made it!");
+                handleTimerComplete();
                 return;
             }
         }, 1000);
@@ -78,14 +103,6 @@ export default function TimerPage() {
         return `${displayHours}:${displayMinutes}:${displaySeconds}`;
     };
     /**
-     * Go to the "All Timers" route
-     * @returns {null}
-     */
-    const goToAllTimersRoute = () => {
-        history.push('/timers');
-        return null;
-    };
-    /**
      * Delete the timer from the global store
      */
     const deleteTimer = () => {
@@ -95,14 +112,14 @@ export default function TimerPage() {
         goToAllTimersRoute();
     };
     // Boolean flag to indicate if the timer is active
-    const isTimerActive = intervalId !== null;
+    let isTimerActive = intervalId !== null;
     // Boolean flag to indicate whether the timer has started
-    const timerStarted = secondsLeft !== totalSeconds;
+    let isTimerStarted = secondsLeft !== totalSeconds;
     return (
         <div className="container">
             <header className="clearfix">
             </header>
-            <div className="jumbotron text-center has-footer">
+            <div className="jumbotron text-center">
                 <div className="jumbotron-header-btns">
                     <button type="button"
                         onClick={goToAllTimersRoute}
@@ -124,8 +141,8 @@ export default function TimerPage() {
                             type="button"
                             onClick={startCountdownTimer}
                             disabled={isTimerActive}>
-                                <FontIcon icon="play" />
-                            </button>
+                            <FontIcon icon="play" />
+                        </button>
                     </div>
                     <div className="col-sm-4 text-center">
                         <button className="btn btn-info btn-lg"
@@ -139,16 +156,16 @@ export default function TimerPage() {
                         <button className="btn btn-danger btn-lg"
                             type="button"
                             onClick={stopCountdownTimer}
-                            disabled={!timerStarted}>
+                            disabled={!isTimerStarted}>
                             <FontIcon icon="stop" />
                         </button>
                     </div>
                 </div>
-                <footer className="jumbotron-footer row">
-                    <div className="col-sm-12 text-center">
-                        <small>Timer ID: <strong>{timer.id}</strong></small>
-                    </div>
-                </footer>
+            </div>
+            <div className="row">
+                <div className="col-sm-12 text-center">
+                    <small>Timer ID: <strong>{timer.id}</strong></small>
+                </div>
             </div>
         </div>
     );
