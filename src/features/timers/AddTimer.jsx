@@ -57,7 +57,7 @@ export default function AddTimerPage() {
     };
 
     return (
-        <div className="container text-center">
+        <div className="page container text-center">
             <form className="timer-form" onSubmit={createTimer}>
                 <img className="mb-4" src={logo} alt="" width="72" height="72" />
                 <h1 className="h3 mb-3 font-weight-normal">Create a New Timer</h1>

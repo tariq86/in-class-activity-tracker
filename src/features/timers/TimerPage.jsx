@@ -116,7 +116,7 @@ export default function TimerPage() {
     // Boolean flag to indicate whether the timer has started
     let isTimerStarted = secondsLeft !== totalSeconds;
     return (
-        <div className="container">
+        <div className="page container">
             <header className="clearfix">
             </header>
             <div className="jumbotron text-center">

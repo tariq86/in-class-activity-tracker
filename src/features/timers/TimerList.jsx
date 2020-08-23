@@ -25,7 +25,7 @@ export default function TimerList() {
     }
 
     return (
-        <div>
+        <div className="page container">
             <div className="d-flex align-items-center p-3 my-3 bg-secondary rounded shadow-sm">
                 {/* TODO: switch with FontAwesome icon that's closer to a timer */}
                 <img className="mr-3" src={logo} alt="" width="48" height="48" />

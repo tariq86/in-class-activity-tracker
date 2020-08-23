@@ -13,3 +13,41 @@
 .jumbotron-header-btn.right {
     right: -50%;
 }
+
+/* Page Transition animation classes */
+.page {
+    position: absolute;
+    left: 15px;
+    right: 15px;
+}
+
+.page-enter {
+    opacity: 0;
+    transform: scale(1.1);
+}
+
+.page-enter-active {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 300ms, transform 300ms;
+}
+
+.page-exit {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.page-exit-active {
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 300ms, transform 300ms;
+}
+
+/*
+Hide overflow to prevent scrollbar from popping up during transitions
+NOTE: we may have to make this more specific if it starts hiding legit
+content, but nothing right now requires vertical scrolling anyways
+ */
+body {
+    overflow-x: hidden;
+}
