@@ -46,5 +46,16 @@
 }
 
 #countdown-timer-display {
-    font-family: monospace;
+    font-family: 'Cutive Mono', monospace;
+}
+
+#timer-display {
+    display: flex;
+    justify-content: space-around;
+    font-family: 'Cutive Mono', monospace;
+    text-align: center;
+}
+
+#timer-display .time {
+    font-size: 3rem;
 }

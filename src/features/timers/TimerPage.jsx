@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useHistory, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Redirect, useHistory, useParams } from 'react-router-dom';
 import FontIcon from '../../app/FontIcon';
+import TimerDisplay from './TimerDisplay';
 import { removeTimer } from './timersSlice';
-import { parseHmsFromSecs } from '../../global/timeParser';
 
 /**
  * Render the Timer page
@@ -11,10 +11,11 @@ import { parseHmsFromSecs } from '../../global/timeParser';
  */
 export default function TimerPage() {
     // Initial setup
-    const [intervalId, setIntervalId] = useState(null);
-    const [secondsLeft, setSecondsLeft] = useState(0);
+    const [timerKeyIndex, setTimerKeyIndex] = useState(0);
+    const [isActive, setIsActive] = useState(false);
+    const [remainingTime, setRemainingTime] = useState(0);
+    let history = useHistory();
     const dispatch = useDispatch();
-    const history = useHistory();
     const { id } = useParams();
     let totalSeconds = 0;
     // Get the current timer from the store
@@ -31,94 +32,74 @@ export default function TimerPage() {
         history.push('/timers');
         return null;
     };
-    // Set the initial seconds once on load, and also
-    // clear out the intervalId during teardown
+    // Set the initial seconds once on load
     useEffect(() => {
-        setSecondsLeft(totalSeconds);
-        return () => {
-            if (intervalId === null) {
-                return;
-            }
-            console.log("cleanup function; clearing interval: ", intervalId);
-            clearInterval(intervalId);
-            setIntervalId(null);
-        }
-    }, [totalSeconds, intervalId]);
+        setRemainingTime(totalSeconds);
+    }, [totalSeconds]);
     // Send the user to the "All Timers" route if a timer wasn't found using the ID route parameter
     if (!timer) {
-        return goToAllTimersRoute();
+        return <Redirect to='/timers' />;
     }
     // Set the totalSeconds variable to the timer's total seconds
     totalSeconds = timer.seconds;
     /**
-     * Handle timer/countdown completion here!
-     * TODO: run any configured alerters here (i.e. "flash Hue lights")
-     */
-    const handleTimerComplete = () => {
-        clearInterval(intervalId);
-        setIntervalId(null);
-        isTimerActive = false;
-        isTimerStarted = false;
-        alert("We made it!");
-    };
-    /**
      * Start the countdown timer!
      */
     const startCountdownTimer = () => {
-        let seconds = secondsLeft;
-        let id = setInterval(() => {
-            seconds = seconds - 1;
-            setSecondsLeft(seconds);
-            if (seconds <= 0) {
-                handleTimerComplete();
-                return;
-            }
-        }, 1000);
-        setIntervalId(id);
+        setIsActive(true);
     };
     /**
      * Stop the current countdown timer
+     * In order to stop the component,
+     * we need to regenerate the `key` props
+     * on each of the timer objects.
      */
     const stopCountdownTimer = () => {
-        clearInterval(intervalId);
-        setSecondsLeft(totalSeconds);
-        setIntervalId(null);
+        updateTimerKeys();
     };
     /**
      * Pause the current countdown timer
      */
     const pauseCountdownTimer = () => {
-        clearInterval(intervalId);
-        setIntervalId(null);
+        setIsActive(false);
+        setRemainingTime(totalSeconds);
     };
     /**
-     * Build the display string for the countdown timer
-     * @returns {String}
+     * Update the index used to build the timer `key` properties
+     * This is needed in order to fully stop an in-progress timer
      */
-    const getCountdownDisplay = () => {
-        const { hours, minutes, seconds } = parseHmsFromSecs(secondsLeft);
-        let displayHours = String(hours).padStart(2, '0');
-        let displayMinutes = String(minutes).padStart(2, '0');
-        let displaySeconds = String(seconds).padStart(2, '0');
-        return `${displayHours}:${displayMinutes}:${displaySeconds}`;
-    };
+    const updateTimerKeys = () => {
+        setIsActive(false);
+        setTimerKeyIndex(prevKey => prevKey + 1);
+    }
     /**
-     * Delete the timer from the global store
+     * The onComplete function for the seconds clock
+     * This is the timer that should trigger all "Timer Complete" actions
+     * @param {Number} totalElapsedTime the total elapsed time of the countdown
+     *
      */
+    const handleSecondsComplete = (totalElapsedTime) => {
+        if (remainingTime - totalElapsedTime > 0) {
+            return [true, 0];
+        }
+        setIsActive(false);
+        // TODO: do cool flashy light stuff here :)
+        alert("We made it!");
+        setRemainingTime(totalSeconds);
+        updateTimerKeys();
+    }
     const deleteTimer = () => {
         const id = timer.id;
         console.log(`Deleting timer ${id}...`);
         dispatch(removeTimer({ id }));
         goToAllTimersRoute();
     };
-    // Boolean flag to indicate if the timer is active
-    let isTimerActive = intervalId !== null;
-    // Boolean flag to indicate whether the timer has started
-    let isTimerStarted = secondsLeft !== totalSeconds;
+    // TODO: is this the best way to wait for the timer to load from the redux store?
+    if (totalSeconds === 0) {
+        return null;
+    }
     return (
         <div className="page container">
-            <header className="clearfix">
-            </header>
             <div className="jumbotron text-center">
                 <div className="jumbotron-header-btns">
                     <button type="button"
@@ -132,32 +113,35 @@ export default function TimerPage() {
                         <FontIcon icon="trash" />
                     </button>
                 </div>
-                <h3 id="countdown-timer-display" className="display-3">{getCountdownDisplay()}</h3>
-                <hr className="my-4" />
                 <h4 className="display-4">{timer.message}</h4>
+                <hr className="my-4" />
+                <TimerDisplay isActive={isActive}
+                    totalSeconds={totalSeconds}
+                    activeIndex={timerKeyIndex}
+                    onComplete={handleSecondsComplete} />
                 <div className="my-4 row">
                     <div className="col-sm-4 text-center">
-                        <button className="btn btn-success btn-lg"
+                        <button className="btn btn-success btn-xl"
                             type="button"
                             onClick={startCountdownTimer}
-                            disabled={isTimerActive}>
-                            <FontIcon icon="play" />
+                            disabled={isActive}>
+                            <FontIcon icon="play" />&nbsp;&nbsp;Start
                         </button>
                     </div>
                     <div className="col-sm-4 text-center">
-                        <button className="btn btn-info btn-lg"
+                        <button className="btn btn-info btn-xl"
                             type="button"
                             onClick={pauseCountdownTimer}
-                            disabled={!isTimerActive}>
-                            <FontIcon icon="pause" />
+                            disabled={!isActive}>
+                            <FontIcon icon="pause" />&nbsp;&nbsp;Pause
                         </button>
                     </div>
                     <div className="col-sm-4 text-center">
-                        <button className="btn btn-danger btn-lg"
+                        <button className="btn btn-danger btn-xl"
                             type="button"
                             onClick={stopCountdownTimer}
-                            disabled={!isTimerStarted}>
-                            <FontIcon icon="stop" />
+                            disabled={!isActive}>
+                            <FontIcon icon="redo" />&nbsp;&nbsp;Reset
                         </button>
                     </div>
                 </div>
