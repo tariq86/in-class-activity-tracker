@@ -21,8 +21,8 @@ export default function NavBar() {
                         </NavLink>
                     </li>
                     <li className="nav-item">
-                        <NavLink to="/hue-bridges" className="nav-link" activeClassName="active" exact={true}>
-                            Hue Bridges
+                        <NavLink to="/hue-bridge" className="nav-link" activeClassName="active" exact={true}>
+                            Hue Bridge Info
                         </NavLink>
                     </li>
                 </ul>
