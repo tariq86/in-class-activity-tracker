@@ -84,13 +84,15 @@ export default function TimerPage() {
         }
         setIsActive(false);
         // TODO: do cool flashy light stuff here :)
-        alert("We made it!");
+        alert("Timer complete!");
         setRemainingTime(totalSeconds);
         updateTimerKeys();
     }
+    /**
+     * Delete the current timer from the store
+     */
     const deleteTimer = () => {
         const id = timer.id;
-        console.log(`Deleting timer ${id}...`);
         dispatch(removeTimer({ id }));
         goToAllTimersRoute();
     };

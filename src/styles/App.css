@@ -58,3 +58,19 @@ body {
     line-height: 1.75;
     border-radius: 0.5rem;
 }
+
+.app-logo {
+    width: 256px;
+    height: 256px;
+    animation: spin 60s infinite linear;
+}
+
+@keyframes spin {
+    from {
+        transform: rotateZ(0deg)
+    }
+
+    to {
+        transform: rotateZ(360deg)
+    }
+}
