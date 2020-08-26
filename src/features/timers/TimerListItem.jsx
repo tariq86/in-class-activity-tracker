@@ -12,7 +12,7 @@ export default function TimerListItem(props) {
     }
     const hmsString = secondsToHmsString(timer.seconds);
     return (
-        <div className="media timer-list-item" onClick={goToTimerPage}>
+        <div className="media timer-list-item my-2" onClick={goToTimerPage}>
             <div className="mx-3 align-self-center">
                 <FontIcon icon="hourglass-half" className="fa-3x" />
             </div>

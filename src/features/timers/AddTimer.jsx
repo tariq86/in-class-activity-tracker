@@ -4,8 +4,10 @@ import { nanoid } from '@reduxjs/toolkit';
 import { useHistory } from 'react-router-dom';
 
 import logo from '../../logo.svg';
-import './Timer.css';
+import './Timer.scss';
 import { addTimer } from './timersSlice';
+import { showModal } from '../../global/modals';
+import { getHueLightGroups } from '../hue/hue-api';
 
 export default function AddTimerPage() {
     // Local state setup -- QDO: is this approach better, or should I use one state object?
@@ -13,6 +15,7 @@ export default function AddTimerPage() {
     const [minutes, setMinutes] = useState('');
     const [seconds, setSeconds] = useState('');
     const [message, setMessage] = useState('');
+    const [hueAlertGroup, setHueAlertGroup] = useState(false);
     const dispatch = useDispatch();
     const history = useHistory();
 
@@ -21,6 +24,7 @@ export default function AddTimerPage() {
     const onMinutesInputChanged = e => setMinutes(e.target.value);
     const onSecondsInputChanged = e => setSeconds(e.target.value);
     const onMessageInputChanged = e => setMessage(e.target.value);
+    const onHueAlertGroupChanged = e => setHueAlertGroup(e.target.value);
 
     /**
      * Create a new timer object using the entered form data,
@@ -32,14 +36,16 @@ export default function AddTimerPage() {
         evt.preventDefault();
         const id = nanoid();
         const totalSeconds = calculateTotalSeconds();
-        dispatch(
-            addTimer({
-                id,
-                active: false,
-                seconds: totalSeconds,
-                message,
-            })
-        );
+        const payload = {
+            id,
+            active: false,
+            seconds: totalSeconds,
+            message,
+        }
+        if (parseInt(hueAlertGroup) > 0) {
+            payload.hueAlertGroup = parseInt(hueAlertGroup);
+        }
+        dispatch(addTimer(payload));
         history.push(`/timers/${id}`);
     };
     /**
@@ -54,6 +60,37 @@ export default function AddTimerPage() {
         total += parseInt(seconds.length === 0 ? 0 : seconds);
         console.debug("Total Seconds: ", total);
         return total;
+    };
+
+    const builGroupdSelectOptions = (allGroups) => {
+        const options = {};
+        for (const prop in allGroups) {
+            if (allGroups.hasOwnProperty(prop)) {
+                options[prop] = allGroups[prop].name;
+            }
+        }
+        return options;
+    }
+
+    const promptForHueGroup = async () => {
+        const allHueGroups = await getHueLightGroups();
+        if (Object.keys(allHueGroups).length === 0) {
+            return;
+        }
+        const inputOptions = builGroupdSelectOptions(allHueGroups);
+        console.log("inputOptions: ", inputOptions);
+        const { value: group } = await showModal({
+            title: 'Select Light Group',
+            input: 'select',
+            inputValue: hueAlertGroup,
+            inputOptions: inputOptions,
+            inputPlaceholder: 'Select a light group',
+            showCancelButton: true,
+        });
+
+        if (group) {
+            setHueAlertGroup(group);
+        }
     };
 
     return (
@@ -89,6 +126,13 @@ export default function AddTimerPage() {
                             placeholder="SS"
                             value={seconds}
                             onChange={onSecondsInputChanged} />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-sm-12">
+                        <button type="button" onClick={promptForHueGroup} className="btn btn-lg btn-info">
+                            Add Hue Light Group
+                        </button>
                     </div>
                 </div>
                 <small className="form-text text-muted">

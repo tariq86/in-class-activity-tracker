@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAllLamps, setAllGroups } from './hueSlice';
-import { flashHueLightGroup, getHueBridge, getHueGroups } from './hue-api';
+import { flashHueLightGroup, getHueBridge, getHueLightGroups } from './hue-api';
 
 export default function BridgeInfoPage() {
     const [activeBridge, setActiveBridge] = useState();
@@ -39,7 +39,7 @@ export default function BridgeInfoPage() {
     }
 
     const syncBridgeGroups = async () => {
-        const groups = await getHueGroups();
+        const groups = await getHueLightGroups();
         dispatch(setAllGroups(groups));
     }
 

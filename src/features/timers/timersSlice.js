@@ -4,8 +4,15 @@ const initialState = {
   all: [{
     id: "123abc",
     active: false,
-    seconds: 69,
+    seconds: 62,
     message: "This is an initial test timer!",
+  },
+  {
+    id: "abc123",
+    active: false,
+    seconds: 5,
+    message: "5 seconds, with flashy lights :)",
+    hueAlertGroup: 2
   }],
   active: null,
 };

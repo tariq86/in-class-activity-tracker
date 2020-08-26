@@ -4,6 +4,8 @@ import { Redirect, useHistory, useParams } from 'react-router-dom';
 import FontIcon from '../../app/FontIcon';
 import TimerDisplay from './TimerDisplay';
 import { removeTimer } from './timersSlice';
+import { flashHueLightGroup } from '../hue/hue-api';
+import Flipper from '../../app/Flipper';
 
 /**
  * Render the Timer page
@@ -14,6 +16,7 @@ export default function TimerPage() {
     const [timerKeyIndex, setTimerKeyIndex] = useState(0);
     const [isActive, setIsActive] = useState(false);
     const [remainingTime, setRemainingTime] = useState(0);
+    const [countdownCompleted, setCountdownCompleted] = useState(false);
     let history = useHistory();
     const dispatch = useDispatch();
     const { id } = useParams();
@@ -55,7 +58,16 @@ export default function TimerPage() {
      * on each of the timer objects.
      */
     const stopCountdownTimer = () => {
+        setIsActive(false);
+        setRemainingTime(totalSeconds);
         updateTimerKeys();
+    };
+
+    const resetCountdownTimer = () => {
+        setRemainingTime(totalSeconds);
+        setIsActive(false);
+        updateTimerKeys();
+        setCountdownCompleted(false);
     };
     /**
      * Pause the current countdown timer
@@ -83,10 +95,10 @@ export default function TimerPage() {
             return [true, 0];
         }
         setIsActive(false);
-        // TODO: do cool flashy light stuff here :)
-        alert("Timer complete!");
-        setRemainingTime(totalSeconds);
-        updateTimerKeys();
+        setCountdownCompleted(true);
+        if (timer.hueAlertGroup) {
+            flashHueLightGroup(timer.hueAlertGroup);
+        }
     }
     /**
      * Delete the current timer from the store
@@ -100,8 +112,56 @@ export default function TimerPage() {
     if (totalSeconds === 0) {
         return null;
     }
+    const timerWithControls = (
+        <div id="timer-with-controls">
+            <TimerDisplay isActive={isActive}
+                totalSeconds={totalSeconds}
+                activeIndex={timerKeyIndex}
+                onComplete={handleSecondsComplete} />
+            <div className="my-4 row">
+                <div className="col-sm-4 text-center">
+                    <button className="btn btn-success btn-xl"
+                        type="button"
+                        onClick={startCountdownTimer}
+                        disabled={isActive}>
+                        <FontIcon icon="play" />&nbsp;&nbsp;Start
+                    </button>
+                </div>
+                <div className="col-sm-4 text-center">
+                    <button className="btn btn-info btn-xl"
+                        type="button"
+                        onClick={pauseCountdownTimer}
+                        disabled={!isActive}>
+                        <FontIcon icon="pause" />&nbsp;&nbsp;Pause
+                    </button>
+                </div>
+                <div className="col-sm-4 text-center">
+                    <button className="btn btn-danger btn-xl"
+                        type="button"
+                        onClick={resetCountdownTimer}
+                        disabled={!isActive}>
+                        <FontIcon icon="redo" />&nbsp;&nbsp;Reset
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+    const timerCompleteDisplay = (
+        <div id="timer-complete-display">
+            <h2 className="display-2 my-4">Time's up!</h2>
+            <div className="row">
+                <div className="col-sm-12 text-center">
+                    <button className="btn btn-success"
+                        type="button"
+                        onClick={resetCountdownTimer}>
+                        <FontIcon icon="redo" />&nbsp;&nbsp;Let's do that again!
+            </button>
+                </div>
+            </div>
+        </div>
+    );
     return (
-        <div className="page container">
+        <div id="timer-page" className="page container">
             <div className="jumbotron text-center">
                 <div className="jumbotron-header-btns">
                     <button type="button"
@@ -117,36 +177,7 @@ export default function TimerPage() {
                 </div>
                 <h4 className="display-4">{timer.message}</h4>
                 <hr className="my-4" />
-                <TimerDisplay isActive={isActive}
-                    totalSeconds={totalSeconds}
-                    activeIndex={timerKeyIndex}
-                    onComplete={handleSecondsComplete} />
-                <div className="my-4 row">
-                    <div className="col-sm-4 text-center">
-                        <button className="btn btn-success btn-xl"
-                            type="button"
-                            onClick={startCountdownTimer}
-                            disabled={isActive}>
-                            <FontIcon icon="play" />&nbsp;&nbsp;Start
-                        </button>
-                    </div>
-                    <div className="col-sm-4 text-center">
-                        <button className="btn btn-info btn-xl"
-                            type="button"
-                            onClick={pauseCountdownTimer}
-                            disabled={!isActive}>
-                            <FontIcon icon="pause" />&nbsp;&nbsp;Pause
-                        </button>
-                    </div>
-                    <div className="col-sm-4 text-center">
-                        <button className="btn btn-danger btn-xl"
-                            type="button"
-                            onClick={stopCountdownTimer}
-                            disabled={!isActive}>
-                            <FontIcon icon="redo" />&nbsp;&nbsp;Reset
-                        </button>
-                    </div>
-                </div>
+                <Flipper flipped={countdownCompleted} front={timerWithControls} back={timerCompleteDisplay} />
             </div>
             <div className="row">
                 <div className="col-sm-12 text-center">

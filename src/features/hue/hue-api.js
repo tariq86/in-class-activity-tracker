@@ -32,7 +32,7 @@ export const flashHueLightGroup = async (groupIndex, bridge = null, numFlashes =
     }, 1000);
 }
 
-export const getHueGroups = async (bridge = null) => {
+export const getHueLightGroups = async (bridge = null) => {
     if (bridge === null) {
         bridge = await getHueBridge();
     }
