@@ -17,7 +17,7 @@ export default function TimerListItem(props) {
                 <FontIcon icon="hourglass-half" className="fa-3x" />
             </div>
             <div className="media-body align-self-center">
-                <h3 className="timer-message">{timer.message}</h3>
+                <h3 className="timer-title">{timer.title}</h3>
                 <h5 className="timer-total-time">Total runtime: {hmsString}</h5>
             </div>
         </div>

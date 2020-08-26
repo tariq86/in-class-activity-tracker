@@ -6,6 +6,7 @@ import TimerDisplay from './TimerDisplay';
 import { removeTimer } from './timersSlice';
 import { flashHueLightGroup } from '../hue/hue-api';
 import Flipper from '../../app/Flipper';
+import ReactMarkdown from 'react-markdown';
 
 /**
  * Render the Timer page
@@ -175,9 +176,17 @@ export default function TimerPage() {
                         <FontIcon icon="trash" />
                     </button>
                 </div>
-                <h4 className="display-4">{timer.message}</h4>
+                <h4 className="display-4">{timer.title}</h4>
                 <hr className="my-4" />
                 <Flipper flipped={countdownCompleted} front={timerWithControls} back={timerCompleteDisplay} />
+                {timer.message &&
+                    <>
+                        <hr className="my-4" />
+                        <div id="timer-message-container">
+                            <ReactMarkdown source={timer.message} />
+                        </div>
+                    </>
+                }
             </div>
             <div className="row">
                 <div className="col-sm-12 text-center">

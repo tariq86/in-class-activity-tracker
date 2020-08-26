@@ -15,6 +15,7 @@ export default function AddTimerPage() {
     const [minutes, setMinutes] = useState('');
     const [seconds, setSeconds] = useState('');
     const [message, setMessage] = useState('');
+    const [title, setTitle] = useState('');
     const [hueAlertGroup, setHueAlertGroup] = useState(false);
     const dispatch = useDispatch();
     const history = useHistory();
@@ -23,8 +24,9 @@ export default function AddTimerPage() {
     const onHoursInputChanged = e => setHours(e.target.value);
     const onMinutesInputChanged = e => setMinutes(e.target.value);
     const onSecondsInputChanged = e => setSeconds(e.target.value);
+    const onTitleInputChanged = e => setTitle(e.target.value);
     const onMessageInputChanged = e => setMessage(e.target.value);
-    const onHueAlertGroupChanged = e => setHueAlertGroup(e.target.value);
+    // const onHueAlertGroupChanged = e => setHueAlertGroup(e.target.value);
 
     /**
      * Create a new timer object using the entered form data,
@@ -40,6 +42,7 @@ export default function AddTimerPage() {
             id,
             active: false,
             seconds: totalSeconds,
+            title,
             message,
         }
         if (parseInt(hueAlertGroup) > 0) {
@@ -128,25 +131,33 @@ export default function AddTimerPage() {
                             onChange={onSecondsInputChanged} />
                     </div>
                 </div>
-                <div className="row">
+                <small className="form-text text-muted">
+                    Total Second(s): {calculateTotalSeconds()}
+                </small>
+                <div className="row my-2">
                     <div className="col-sm-12">
                         <button type="button" onClick={promptForHueGroup} className="btn btn-lg btn-info">
                             Add Hue Light Group
                         </button>
                     </div>
                 </div>
-                <small className="form-text text-muted">
-                    Total Second(s): {calculateTotalSeconds()}
-                </small>
-                <label htmlFor="message">Message:</label>
-                <textarea type="text"
-                    id="message"
-                    className="form-control form-control-lg"
-                    placeholder="Message"
-                    required="required"
-                    autoComplete="off"
-                    value={message}
-                    onChange={onMessageInputChanged} />
+                <div className="form-group">
+                    <label htmlFor="title">Title</label>
+                    <input type="text" className="form-control" id="title" value={title} onChange={onTitleInputChanged} />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="message">Message:</label>
+                    <textarea type="text"
+                        id="message"
+                        className="form-control form-control-lg"
+                        placeholder="Message"
+                        required="required"
+                        autoComplete="off"
+                        aria-labelledby="message-help"
+                        value={message}
+                        onChange={onMessageInputChanged} />
+                    <small id="message-help" className="form-text text-muted">Try entering some Markdown!</small>
+                </div>
                 <button className="btn btn-lg btn-primary btn-block" type="submit">Create Timer</button>
             </form>
         </div>

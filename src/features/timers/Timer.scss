@@ -61,7 +61,10 @@
 }
 
 #timer-page {
+    #timer-message-container {
+      text-align: left;
+    }
     .flipper {
-        height: 250px;
+        height: 275px;
     }
 }

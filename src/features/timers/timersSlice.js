@@ -5,13 +5,28 @@ const initialState = {
     id: "123abc",
     active: false,
     seconds: 62,
-    message: "This is an initial test timer!",
+    title: "Test Timer",
+    message: `
+# Hello World!
+## Heading 2
+### Heading 3
+#### Heading 4
+##### Heading 5
+###### Heading 6
+
+ * List 1
+ * List 2
+---
+- [ ] Checkbox 1
+- [x] Checked!
+`
   },
   {
     id: "abc123",
     active: false,
     seconds: 5,
-    message: "5 seconds, with flashy lights :)",
+    title: "5 seconds w/ flashy lights :)",
+    message: null,
     hueAlertGroup: 2
   }],
   active: null,
