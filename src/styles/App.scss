@@ -41,6 +41,18 @@
     margin: 1rem auto;
 }
 
+.delete {
+    &:hover {
+        background-color: $red;
+    }
+}
+
+.swal2-actions {
+    .button {
+        margin: 0 1rem;
+    }
+}
+
 @keyframes spin {
     from {
         transform: rotateZ(0deg)

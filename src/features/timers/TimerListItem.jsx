@@ -1,14 +1,22 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { secondsToTimeString } from '../../global/timeFunctions';
+import { useDispatch } from 'react-redux';
+import { removeTimer } from './timersSlice';
 import FontIcon from '../../app/FontIcon';
 
 export default function TimerListItem({ timer }) {
     const history = useHistory();
+    const dispatch = useDispatch();
 
     const goToTimerPage = () => {
         history.push(`/timers/${timer.id}`);
-    }
+    };
+    const deleteTimer = (e) => {
+        e.stopPropagation();
+        const id = timer.id;
+        dispatch(removeTimer({ id }));
+    };
     const hmsString = secondsToTimeString(timer.seconds);
     return (
         <div className="media" onClick={goToTimerPage}>
@@ -22,7 +30,9 @@ export default function TimerListItem({ timer }) {
                 </div>
             </div>
             <div className="media-right">
-                <a className="delete"></a>
+                <button className="delete" onClick={deleteTimer}>
+                    <span className="is-sr-only">Delete</span>
+                </button>
             </div>
         </div>
     );
