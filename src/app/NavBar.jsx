@@ -11,7 +11,7 @@ export default function NavBar() {
                 <a className="navbar-item" href="/">
                     <img src={logo} className="navbar-logo" alt="logo" width="100" height="100" />
                 </a>
-                <a role="button"
+                <span role="button"
                     className={`navbar-burger burger ${isActive ? 'is-active' : ''}`}
                     aria-label="menu"
                     aria-expanded="false"
@@ -20,7 +20,7 @@ export default function NavBar() {
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
-                </a>
+                </span>
             </div>
             <div id="main-navbar" className={`navbar-menu ${isActive ? 'is-active' : ''}`}>
                 <div className="navbar-start">

@@ -36,7 +36,10 @@ export default function TimerList() {
                     }
                     {allTimers.length > 0 &&
                         <div className="panel-block">
-                            <a role="button" className="is-pulled-right has-text-danger" onClick={clearTimers}>Clear all</a>
+                            <button className="button is-small is-outlined is-pulled-right is-danger"
+                                onClick={clearTimers}>
+                                Clear all
+                            </button>
                         </div>
                     }
                 </div>
