@@ -1,31 +1,32 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import logo from '../logo.svg';
 
 export default function NavBar() {
     return (
-        <nav className="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark">
-            <a className="navbar-brand" href="#">TtT</a>
-            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                <span className="navbar-toggler-icon"></span>
-            </button>
-            <div className="collapse navbar-collapse" id="navbarCollapse">
-                <ul className="navbar-nav mr-auto">
-                    <li className="nav-item">
-                        <NavLink to="/" className="nav-link" activeClassName="active" exact>
-                            Home
-                        </NavLink>
-                    </li>
-                    <li className="nav-item">
-                        <NavLink to="/timers" className="nav-link" activeClassName="active" exact={true}>
-                            Timers
-                        </NavLink>
-                    </li>
-                    <li className="nav-item">
-                        <NavLink to="/hue-bridge" className="nav-link" activeClassName="active" exact={true}>
-                            Hue Bridge Info
-                        </NavLink>
-                    </li>
-                </ul>
+        <nav className="navbar is-fixed-bottom" role="navigation" aria-label="Main Navigation">
+            <div className="navbar-brand">
+                <a className="navbar-item" href="/">
+                    <img src={logo} className="navbar-logo" alt="logo" width="100" height="100" />
+                </a>
+                <a role="button" className="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
+            <div className="navbar-menu" id="main-navbar">
+                <div className="navbar-start">
+                    <NavLink to="/" className="navbar-item" activeClassName="active" exact>
+                        Home
+                    </NavLink>
+                    <NavLink to="/timers" className="navbar-item" activeClassName="active" exact={true}>
+                        Timers
+                    </NavLink>
+                    <NavLink to="/hue-bridge" className="navbar-item" activeClassName="active" exact={true}>
+                        Hue Bridge Info
+                    </NavLink>
+                </div>
             </div>
         </nav>
     );

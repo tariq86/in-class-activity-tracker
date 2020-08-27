@@ -6,7 +6,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import NavBar from './app/NavBar.jsx';
 import RouteSwitcher from './app/RouteSwitcher.jsx';
 
-import './styles/App.css';
+import './styles/App.scss';
 
 library.add(fas);
 
