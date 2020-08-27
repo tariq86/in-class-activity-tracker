@@ -20,7 +20,6 @@ export default function AddTimerPage() {
     const history = useHistory();
 
     const onInputChanged = (e) => {
-        console.log("Hi: ", e.target.name);
         e.preventDefault();
         setFormData({ ...formData, [e.target.name]: e.target.value });
     }
@@ -76,6 +75,9 @@ export default function AddTimerPage() {
         return options;
     }
 
+    /**
+     * Prompt the user to select a Hue group
+     */
     const promptForHueGroup = async () => {
         const allHueGroups = await getHueLightGroups();
         if (Object.keys(allHueGroups).length === 0) {
@@ -103,7 +105,7 @@ export default function AddTimerPage() {
                 </div>
                 <form className="timer-form" onSubmit={createTimer}>
                     <label htmlFor="hours" className="label">Enter Time</label>
-                    <div id="hms-fields" className="field is-grouped column">
+                    <div id="hms-fields" className="field is-grouped is-grouped-centered">
                         <div className="control">
                             <input type="number"
                                 className="input"
@@ -135,8 +137,8 @@ export default function AddTimerPage() {
                     <small className="is-size-7">
                         Total Second(s): {calculateTotalSeconds()}
                     </small>
-                    <div className="row my-2">
-                        <div className="col-sm-12">
+                    <div className="columns my-2">
+                        <div className="column">
                             <button
                                 type="button"
                                 onClick={promptForHueGroup}
@@ -174,7 +176,10 @@ export default function AddTimerPage() {
                         <small id="message-help"
                             className="is-size-7">Try entering some Markdown!</small>
                     </div>
-                    <button className="button is-large is-success is-fullwidth" type="submit">Create Timer</button>
+                    <button className="button is-large is-success is-fullwidth"
+                        type="submit">
+                        Create Activity
+                    </button>
                 </form>
             </div>
         </div>

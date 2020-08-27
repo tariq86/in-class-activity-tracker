@@ -1,0 +1,31 @@
+.markdown-container {
+  border: 1px solid #cacaca;
+  border-radius: 4px;
+  box-shadow: 0 0.125em 0.25em rgba(10, 10, 10, 0.1);
+  padding: 1rem;
+  h1 {
+    font-size: 3rem;
+  }
+  h2 {
+    font-size: 2.5rem;
+  }
+  h3 {
+    font-size: 2.25rem;
+  }
+  h4 {
+    font-size: 2rem;
+  }
+  h5 {
+    font-size: 1.75rem;
+  }
+  h6 {
+    font-size: 1.5rem;
+  }
+  ul {
+    list-style-type: disc;
+    margin-left: 1rem;
+  }
+  ol {
+    margin-left: 1rem;
+  }
+}

@@ -13,7 +13,9 @@ const initialState = {
 #### Heading 4
 ##### Heading 5
 ###### Heading 6
-
+\`\`\`js
+var code = "Testing";
+\`\`\`
  * List 1
  * List 2
 ---

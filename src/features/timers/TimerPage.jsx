@@ -7,7 +7,7 @@ import TimerDisplay from './TimerDisplay';
 import { removeTimer } from './timersSlice';
 import { flashHueLightGroup } from '../hue/hue-api';
 import Flipper from '../../app/Flipper';
-import ReactMarkdown from 'react-markdown';
+import Markdowner from '../../app/Markdowner';
 
 import './Timer.scss';
 
@@ -76,7 +76,7 @@ export default function TimerPage() {
      * @returns {String}
      */
     const getCompletionTime = () => {
-        if(!isActive) {
+        if (!isActive) {
             return "¯\\_(ツ)_/¯";
         }
         let startedAt = timerStartedAt;
@@ -134,88 +134,87 @@ export default function TimerPage() {
                 totalSeconds={totalSeconds}
                 activeIndex={timerKeyIndex}
                 onComplete={handleSecondsComplete} />
-            <div className="my-4 row">
-                <div className="col-sm-4 text-center">
-                    <button className="btn btn-success btn-xl"
-                        type="button"
-                        onClick={startCountdownTimer}
-                        disabled={isActive}>
-                        <FontIcon icon="play" />&nbsp;&nbsp;Start
-                    </button>
-                </div>
-                <div className="col-sm-4 text-center">
-                    <button className="btn btn-info btn-xl"
-                        type="button"
-                        onClick={pauseCountdownTimer}
-                        disabled={!isActive}>
-                        <FontIcon icon="pause" />&nbsp;&nbsp;Pause
-                    </button>
-                </div>
-                <div className="col-sm-4 text-center">
-                    <button className="btn btn-danger btn-xl"
-                        type="button"
-                        onClick={resetCountdownTimer}
-                        disabled={!isActive}>
-                        <FontIcon icon="redo" />&nbsp;&nbsp;Reset
-                    </button>
+            <div className="buttons is-centered my-4">
+                <button className="button is-success is-large"
+                    type="button"
+                    onClick={startCountdownTimer}
+                    disabled={isActive}>
+                    <FontIcon icon="play" />&nbsp;&nbsp;Start
+                </button>
+                <button className="button is-info is-large"
+                    type="button"
+                    onClick={pauseCountdownTimer}
+                    disabled={!isActive}>
+                    <FontIcon icon="pause" />&nbsp;&nbsp;Pause
+                </button>
+                <button className="button is-danger is-large"
+                    type="button"
+                    onClick={resetCountdownTimer}
+                    disabled={!isActive}>
+                    <FontIcon icon="redo" />&nbsp;&nbsp;Reset
+                </button>
+            </div>
+            <div className="columns">
+                <div className="column has-text-centered">
+                    Timer will complete at:<br /><strong>{getCompletionTime()}</strong>
                 </div>
             </div>
         </div>
     );
     const timerCompleteDisplay = (
         <div id="timer-complete-display">
-            <h2 className="display-2 my-4">Time's up!</h2>
-            <div className="row">
-                <div className="col sm-12 text-center">
+            <h2 className="title my-4">Time's up!</h2>
+            <div className="columns">
+                <div className="column has-text-centered">
                     <strong>Make sure you're recording!</strong>
                 </div>
             </div>
-            <div className="row mt-4">
-                <div className="col-sm-12 text-center">
-                    <button className="btn btn-success"
+            <div className="columns mt-4">
+                <div className="column has-text-centered">
+                    <button className="button is-success is-large"
                         type="button"
                         onClick={resetCountdownTimer}>
-                        <FontIcon icon="redo" />&nbsp;&nbsp;Let's do that again!
-            </button>
+                        <span className="icon">
+                            <FontIcon icon="redo" />
+                        </span>
+                        <span>Let's do that again!</span>
+                    </button>
                 </div>
             </div>
         </div>
     );
     return (
         <div id="timer-page" className="page container">
-            <div className="jumbotron text-center">
-                <div className="jumbotron-header-btns">
+            <div className="card has-text-centered">
+                <div className="card-header" style={{ alignItems: 'center' }}>
                     <button type="button"
                         onClick={goToAllTimersRoute}
-                        className="btn btn-info jumbotron-header-btn float-left">
-                        <FontIcon icon="arrow-left" />
+                        className="button is-info is-small">
+                        <span className="icon">
+                            <FontIcon icon="arrow-left" />
+                        </span>
+                        <span>Back</span>
                     </button>
+                    <p className="card-header-title" style={{ justifyContent: 'center' }}>
+                        {timer.title}
+                    </p>
                     <button type="button"
                         onClick={deleteTimer}
-                        className="btn btn-danger jumbotron-header-btn float-right">
-                        <FontIcon icon="trash" />
+                        className="button is-danger is-small is-right">
+                        <span>Delete</span>
+                        <span className="icon">
+                            <FontIcon icon="trash" />
+                        </span>
                     </button>
                 </div>
-                <h4 className="display-4">{timer.title}</h4>
-                <hr className="my-4" />
-                <Flipper flipped={countdownCompleted} front={timerWithControls} back={timerCompleteDisplay} />
-                <div className="row">
-                    <div className="col-sm-12 text-center">
-                        Timer will complete at:<br /><strong>{getCompletionTime()}</strong>
-                    </div>
+                <div className="card-content">
+                    <Flipper flipped={countdownCompleted} front={timerWithControls} back={timerCompleteDisplay} />
+                    {timer.message && <Markdowner source={timer.message} />}
                 </div>
-                {timer.message &&
-                    <>
-                        <hr className="my-4" />
-                        <div id="timer-message-container">
-                            <ReactMarkdown source={timer.message} />
-                        </div>
-                    </>
-                }
             </div>
-            <div className="row">
-                <div className="col-sm-12 text-center">
-                    <small>Timer ID: <strong>{timer.id}</strong></small>
+            <div className="columns">
+                <div className="column has-text-centered">
+                    <small>Timer ID: <em>{timer.id}</em></small>
                 </div>
             </div>
         </div>

@@ -2,6 +2,9 @@
   "name": "in-class-activity-tracker",
   "version": "0.1.0",
   "private": true,
+  "devDependencies": {
+    "babel-plugin-prismjs": "^2.0.1"
+  },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.30",
     "@fortawesome/free-brands-svg-icons": "^5.14.0",
@@ -17,6 +20,7 @@
     "hue-hacking-node": "^1.6.0",
     "moment": "^2.27.0",
     "node-sass": "^4.14.1",
+    "prismjs": "^1.21.0",
     "react": "^16.13.1",
     "react-countdown-circle-timer": "^2.3.7",
     "react-dom": "^16.13.1",

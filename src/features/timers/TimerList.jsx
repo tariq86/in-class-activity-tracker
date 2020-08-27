@@ -25,7 +25,7 @@ export default function TimerList() {
 
     return (
         <div id="timer-list-page">
-            <div className="panel is-primary">
+            <div className="panel is-info">
                 <div className="panel-heading has-text-centered">All Timers</div>
                 <div className="my-3">
                     {allTimers.length > 0
@@ -34,20 +34,21 @@ export default function TimerList() {
                             <h6>No timers found; please add one!</h6>
                         </div>
                     }
-                    {allTimers.length > 0 &&
-                        <div className="panel-block">
-                            <button className="button is-small is-outlined is-pulled-right is-danger"
-                                onClick={clearTimers}>
-                                Clear all
-                            </button>
-                        </div>
-                    }
                 </div>
                 <div className="panel-block">
-                    <button onClick={goToAddTimerRoute}
-                        className="button is-primary is-outlined is-fullwidth">
-                        Add New Timer
-                    </button>
+                    <div className="column is-10">
+                        <button onClick={goToAddTimerRoute}
+                            className="button is-primary is-fullwidth">
+                            Add New Timer
+                        </button>
+                    </div>
+                    <div className="column">
+                        <button className="button is-outlined is-fullwidth is-danger"
+                            onClick={clearTimers}
+                            disabled={allTimers.length <= 0}>
+                            Clear all
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

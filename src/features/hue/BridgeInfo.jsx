@@ -15,7 +15,6 @@ export default function BridgeInfoPage() {
         const loadBridge = async () => {
             console.log('No bridge info loaded yet, loading bridge info now');
             const hueBridge = await getHueBridge();
-            console.log('Hue bridge:', hueBridge);
             setActiveBridge(hueBridge);
         }
         if (!activeBridge) {
@@ -26,8 +25,10 @@ export default function BridgeInfoPage() {
     if (!activeBridge) {
         return (
             <div className="page container">
-                <div className="jumbotron text-center">
-                    <h1>Loading...</h1>
+                <div className="card">
+                    <div className="card-content has-text-centered">
+                        <h1 className="title">Loading...</h1>
+                    </div>
                 </div>
             </div>
         );
@@ -52,42 +53,47 @@ export default function BridgeInfoPage() {
     const groupSelectOptions = Object.keys(allGroups).map(key => <option value={key} key={key}>{allGroups[key].name}</option>)
     return (
         <div className="page container">
-            <div className="jumbotron text-center">
-                <h3 className="display-4">Hue Bridge Info</h3>
-                <hr className="my-4" />
-                <p><strong>Bridge API URL:</strong>&nbsp;{activeBridge.baseApiUrl}</p>
-                <hr className="my-4" />
-                <div className="row text-center">
-                    <div className="col-sm-12 col-md-6">
-                        Total # of Lamps: <strong>{allLamps.length}</strong><br />
-                        <button name="test-group"
-                            onClick={syncBridgeLights}
-                            disabled={allLamps.length > 0}
-                            className="btn btn-primary mt-2">
-                            Sync Lamps
-                        </button>
-                    </div>
-                    <div className="col-sm-12 col-md-6">
-                        Total # of Groups: <strong>{numGroups}</strong><br />
-                        <button name="test-group"
-                            onClick={syncBridgeGroups}
-                            disabled={numGroups > 0}
-                            className="btn btn-primary mt-2">
-                            Sync Groups
-                        </button>
+            <div className="panel is-info">
+                <div className="panel-heading has-text-centered">
+                    <h3 className="title">Hue Bridge Info</h3>
+                </div>
+                <div className="panel-block">
+                    <div className="column has-text-centered">
+                        <p><strong>Bridge API URL:</strong>&nbsp;{activeBridge.baseApiUrl}</p>
                     </div>
                 </div>
-                <hr className="my-4" />
+                <div className="my-4">
+                    <div className="columns has-text-centered">
+                        <div className="column column">
+                            Total # of Lamps: <strong>{allLamps.length}</strong><br />
+                            <button name="test-group"
+                                onClick={syncBridgeLights}
+                                disabled={allLamps.length > 0}
+                                className="button is-primary mt-2">
+                                Sync Lamps
+                        </button>
+                        </div>
+                        <div className="column column">
+                            Total # of Groups: <strong>{numGroups}</strong><br />
+                            <button name="test-group"
+                                onClick={syncBridgeGroups}
+                                disabled={numGroups > 0}
+                                className="button is-primary mt-2">
+                                Sync Groups
+                        </button>
+                        </div>
+                    </div>
+                </div>
                 {numGroups === 0 &&
-                    <div className="row">
-                        <div className="col-sm-12">
+                    <div className="columns">
+                        <div className="column has-text-centered">
                             <small>Please click "Sync Groups" above to sync all light groups!</small>
                         </div>
                     </div>
                 }
-                <div className="row">
-                    <div className="col-sm-12">
-                        <select className="custom-select custom-select-lg mb-3"
+                <div className="panel-block">
+                    <div className="select mx-3 my-3 is-fullwidth">
+                        <select
                             value={selectedGroup}
                             onChange={e => setSelectedGroup(e.target.value)}
                             disabled={numGroups === 0}>
@@ -96,16 +102,14 @@ export default function BridgeInfoPage() {
                         </select>
                     </div>
                 </div>
-                <div className="row">
-                    <div className="col-sm-12">
-                        <button type="button"
-                            className="btn btn-info btn-block"
-                            name="test-all"
-                            onClick={testBridgeConnection}
-                            disabled={selectedGroup === 0}>
-                            Test Bridge Connection
-                        </button>
-                    </div>
+                <div className="panel-block">
+                    <button type="button"
+                        className="button is-warning is-large is-fullwidth"
+                        name="test-all"
+                        onClick={testBridgeConnection}
+                        disabled={selectedGroup === 0}>
+                        Test Bridge Connection
+                    </button>
                 </div>
             </div>
         </div>
