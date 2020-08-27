@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { nanoid } from '@reduxjs/toolkit';
 import { useHistory } from 'react-router-dom';
 import { addTimer } from './timersSlice';
-import { showModal } from '../../global/modals';
+import { showModal, showToast } from '../../global/alertFunctions';
 import { getHueLightGroups } from '../hue/hue-api';
 
 export default function AddTimerPage() {
@@ -36,7 +36,7 @@ export default function AddTimerPage() {
         const id = nanoid();
         const totalSeconds = calculateTotalSeconds();
         if (totalSeconds <= 0) {
-            alert("Activity time must be > 0");
+            showToast('error', 'Activity timer must be > 0');
             return;
         }
         const payload = {
@@ -83,8 +83,7 @@ export default function AddTimerPage() {
         }
         const inputOptions = builGroupdSelectOptions(allHueGroups);
         console.log("inputOptions: ", inputOptions);
-        const { value: group } = await showModal({
-            title: 'Select Light Group',
+        const { value: group } = await showModal('question', 'Select Light Group', {
             input: 'select',
             inputValue: hueAlertGroup,
             inputOptions: inputOptions,
