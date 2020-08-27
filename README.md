@@ -1,3 +1,22 @@
+# in-Class Activity Tracker (iCAT)
+
+## Overview
+This is a simple countdown timer intended to be used for in-class activities, with a few bonus features:
+ * Philips Hue integration -- select a Hue light group to flash when the time's up!
+ * Markdown support -- the timer's message, intended to contain activity instructions, accepts Markdown input that will be renderedas HTML!
+ * *Coming Soon* Slack support -- send a Slack alert when the timer is up!
+
+## Usage
+ 1. `git clone` this repo to get the code
+ 2. `npm install` to install all dependencies
+ 3. \[OPTIONAL\] If you want Philips Hue integration, you will need to get your `.env` file set up:
+    1. Copy the `.env` file to `.env.local`, then fill out the values in the new `.env.local` file only
+    2. You will need to get your Hue bridge's IP address and create a new app key. You can follow the official ["Getting Started" guide](https://developers.meethue.com/develop/get-started-2/) to get these.
+    3. *Coming Soon* Support for bridge discovery is a planned feature. Once that's in place, this process will be handled within the app
+ 4. `npm start` to start the local development server
+
+## Code Information
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
 
 ## Available Scripts
