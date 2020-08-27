@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, useHistory, useParams } from 'react-router-dom';
 import FontIcon from '../../app/FontIcon';
@@ -17,6 +18,7 @@ export default function TimerPage() {
     const [timerKeyIndex, setTimerKeyIndex] = useState(0);
     const [isActive, setIsActive] = useState(false);
     const [remainingTime, setRemainingTime] = useState(0);
+    const [timerStartedAt, setTimerStartedAt] = useState(null);
     const [countdownCompleted, setCountdownCompleted] = useState(false);
     let history = useHistory();
     const dispatch = useDispatch();
@@ -50,25 +52,36 @@ export default function TimerPage() {
      * Start the countdown timer!
      */
     const startCountdownTimer = () => {
+        setTimerStartedAt(moment());
         setIsActive(true);
     };
     /**
-     * Stop the current countdown timer
+     * Reset the current countdown timer
      * In order to stop the component,
      * we need to regenerate the `key` props
      * on each of the timer objects.
      */
-    const stopCountdownTimer = () => {
-        setIsActive(false);
-        setRemainingTime(totalSeconds);
-        updateTimerKeys();
-    };
-
     const resetCountdownTimer = () => {
         setRemainingTime(totalSeconds);
+        setTimerStartedAt(null);
         setIsActive(false);
         updateTimerKeys();
         setCountdownCompleted(false);
+    };
+    /**
+     * Get the time that the timer will complete at,
+     * if the timer is currently active.
+     * @returns {String}
+     */
+    const getCompletionTime = () => {
+        if(!isActive) {
+            return "¯\\_(ツ)_/¯";
+        }
+        let startedAt = timerStartedAt;
+        if (startedAt === null) {
+            startedAt = moment();
+        }
+        return startedAt.add(remainingTime, 'seconds').format("YYYY-MM-DD hh:mm:ss")
     };
     /**
      * Pause the current countdown timer
@@ -151,6 +164,11 @@ export default function TimerPage() {
         <div id="timer-complete-display">
             <h2 className="display-2 my-4">Time's up!</h2>
             <div className="row">
+                <div className="col sm-12 text-center">
+                    <strong>Make sure you're recording!</strong>
+                </div>
+            </div>
+            <div className="row mt-4">
                 <div className="col-sm-12 text-center">
                     <button className="btn btn-success"
                         type="button"
@@ -179,6 +197,11 @@ export default function TimerPage() {
                 <h4 className="display-4">{timer.title}</h4>
                 <hr className="my-4" />
                 <Flipper flipped={countdownCompleted} front={timerWithControls} back={timerCompleteDisplay} />
+                <div className="row">
+                    <div className="col-sm-12 text-center">
+                        Timer will complete at:<br /><strong>{getCompletionTime()}</strong>
+                    </div>
+                </div>
                 {timer.message &&
                     <>
                         <hr className="my-4" />
