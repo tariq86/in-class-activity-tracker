@@ -10,8 +10,8 @@ export default function NavBar() {
             </button>
             <div className="collapse navbar-collapse" id="navbarCollapse">
                 <ul className="navbar-nav mr-auto">
-                    <li className="nav-item active">
-                        <NavLink to="/" className="nav-link" activeClassName="active" exact={true}>
+                    <li className="nav-item">
+                        <NavLink to="/" className="nav-link" activeClassName="active" exact>
                             Home
                         </NavLink>
                     </li>
