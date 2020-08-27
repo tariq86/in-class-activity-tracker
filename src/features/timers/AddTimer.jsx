@@ -2,31 +2,28 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { nanoid } from '@reduxjs/toolkit';
 import { useHistory } from 'react-router-dom';
-
-import logo from '../../logo.svg';
-import './Timer.scss';
 import { addTimer } from './timersSlice';
 import { showModal } from '../../global/modals';
 import { getHueLightGroups } from '../hue/hue-api';
 
 export default function AddTimerPage() {
-    // Local state setup -- QDO: is this approach better, or should I use one state object?
-    const [hours, setHours] = useState('');
-    const [minutes, setMinutes] = useState('');
-    const [seconds, setSeconds] = useState('');
-    const [message, setMessage] = useState('');
-    const [title, setTitle] = useState('');
+    const [formData, setFormData] = useState({
+        hours: '',
+        minutes: '',
+        seconds: '',
+        title: '',
+        message: '',
+        hueAlertGroup: '',
+    });
     const [hueAlertGroup, setHueAlertGroup] = useState(false);
     const dispatch = useDispatch();
     const history = useHistory();
 
-    // Form events
-    const onHoursInputChanged = e => setHours(e.target.value);
-    const onMinutesInputChanged = e => setMinutes(e.target.value);
-    const onSecondsInputChanged = e => setSeconds(e.target.value);
-    const onTitleInputChanged = e => setTitle(e.target.value);
-    const onMessageInputChanged = e => setMessage(e.target.value);
-    // const onHueAlertGroupChanged = e => setHueAlertGroup(e.target.value);
+    const onInputChanged = (e) => {
+        console.log("Hi: ", e.target.name);
+        e.preventDefault();
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    }
 
     /**
      * Create a new timer object using the entered form data,
@@ -38,12 +35,16 @@ export default function AddTimerPage() {
         evt.preventDefault();
         const id = nanoid();
         const totalSeconds = calculateTotalSeconds();
+        if (totalSeconds <= 0) {
+            alert("Activity time must be > 0");
+            return;
+        }
         const payload = {
             id,
             active: false,
             seconds: totalSeconds,
-            title,
-            message,
+            title: formData.title,
+            message: formData.message,
         }
         if (parseInt(hueAlertGroup) > 0) {
             payload.hueAlertGroup = parseInt(hueAlertGroup);
@@ -58,9 +59,9 @@ export default function AddTimerPage() {
      */
     const calculateTotalSeconds = () => {
         let total = 0;
-        total += (hours * 3600);
-        total += (minutes * 60);
-        total += parseInt(seconds.length === 0 ? 0 : seconds);
+        total += (formData.hours * 3600);
+        total += (formData.minutes * 60);
+        total += parseInt(formData.seconds.length === 0 ? 0 : formData.seconds);
         console.debug("Total Seconds: ", total);
         return total;
     };
@@ -95,71 +96,88 @@ export default function AddTimerPage() {
             setHueAlertGroup(group);
         }
     };
-
     return (
-        <div className="page container text-center">
-            <form className="timer-form" onSubmit={createTimer}>
-                <img className="mb-4" src={logo} alt="" width="72" height="72" />
-                <h1 className="h3 mb-3 font-weight-normal">Create a New Timer</h1>
-                <label htmlFor="hours">Enter Time:</label>
-                <div className="form-row">
-                    <div className="col">
-                        <input type="number"
-                            className="form-control"
-                            name="hours"
-                            id="hours"
-                            placeholder="HH"
-                            value={hours}
-                            onChange={onHoursInputChanged} />
-                    </div>
-                    <div className="col">
-                        <input type="number"
-                            className="form-control"
-                            name="minutes"
-                            id="minutes"
-                            placeholder="MM"
-                            value={minutes}
-                            onChange={onMinutesInputChanged} />
-                    </div>
-                    <div className="col">
-                        <input type="number"
-                            className="form-control"
-                            name="seconds"
-                            id="seconds"
-                            placeholder="SS"
-                            value={seconds}
-                            onChange={onSecondsInputChanged} />
-                    </div>
+        <div className="page has-text-centered">
+            <div className="panel is-success">
+                <div className="panel-heading">
+                    Create New Activity
                 </div>
-                <small className="form-text text-muted">
-                    Total Second(s): {calculateTotalSeconds()}
-                </small>
-                <div className="row my-2">
-                    <div className="col-sm-12">
-                        <button type="button" onClick={promptForHueGroup} className="btn btn-lg btn-info">
-                            Add Hue Light Group
+                <form className="timer-form" onSubmit={createTimer}>
+                    <label htmlFor="hours" className="label">Enter Time</label>
+                    <div id="hms-fields" className="field is-grouped column">
+                        <div className="control">
+                            <input type="number"
+                                className="input"
+                                name="hours"
+                                id="hours"
+                                placeholder="HH"
+                                value={formData.hours}
+                                onChange={onInputChanged} />
+                        </div>
+                        <div className="control">
+                            <input type="number"
+                                className="input"
+                                name="minutes"
+                                id="minutes"
+                                placeholder="MM"
+                                value={formData.minutes}
+                                onChange={onInputChanged} />
+                        </div>
+                        <div className="control">
+                            <input type="number"
+                                className="input"
+                                name="seconds"
+                                id="seconds"
+                                placeholder="SS"
+                                value={formData.seconds}
+                                onChange={onInputChanged} />
+                        </div>
+                    </div>
+                    <small className="is-size-7">
+                        Total Second(s): {calculateTotalSeconds()}
+                    </small>
+                    <div className="row my-2">
+                        <div className="col-sm-12">
+                            <button
+                                type="button"
+                                onClick={promptForHueGroup}
+                                className="button is-info is-outlined">
+                                Add Hue Light Group
                         </button>
+                        </div>
                     </div>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="title">Title</label>
-                    <input type="text" className="form-control" id="title" value={title} onChange={onTitleInputChanged} />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="message">Message:</label>
-                    <textarea type="text"
-                        id="message"
-                        className="form-control form-control-lg"
-                        placeholder="Message"
-                        required="required"
-                        autoComplete="off"
-                        aria-labelledby="message-help"
-                        value={message}
-                        onChange={onMessageInputChanged} />
-                    <small id="message-help" className="form-text text-muted">Try entering some Markdown!</small>
-                </div>
-                <button className="btn btn-lg btn-primary btn-block" type="submit">Create Timer</button>
-            </form>
+                    <div className="field">
+                        <label htmlFor="title" className="label">Title</label>
+                        <div className="control">
+                            <input type="text"
+                                id="title"
+                                name="title"
+                                placeholder="Activity title"
+                                className="input"
+                                required="required"
+                                value={formData.title}
+                                onChange={onInputChanged} />
+                        </div>
+                    </div>
+                    <div className="field">
+                        <label htmlFor="message" className="label">Message</label>
+                        <div className="control">
+                            <textarea type="text"
+                                id="message"
+                                name="message"
+                                className="textarea"
+                                placeholder="Enter the activity instructions here!"
+                                autoComplete="off"
+                                aria-labelledby="message-help"
+                                value={formData.message}
+                                onChange={onInputChanged} />
+                        </div>
+                        <small id="message-help"
+                            className="is-size-7">Try entering some Markdown!</small>
+                    </div>
+                    <button className="button is-large is-success is-fullwidth" type="submit">Create Timer</button>
+                </form>
+            </div>
         </div>
     );
 }

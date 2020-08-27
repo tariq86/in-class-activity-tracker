@@ -1,24 +1,28 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { secondsToHmsString } from '../../global/timeParser';
+import { secondsToTimeString } from '../../global/timeFunctions';
 import FontIcon from '../../app/FontIcon';
 
-export default function TimerListItem(props) {
-    const timer = props.timer;
+export default function TimerListItem({ timer }) {
     const history = useHistory();
 
     const goToTimerPage = () => {
         history.push(`/timers/${timer.id}`);
     }
-    const hmsString = secondsToHmsString(timer.seconds);
+    const hmsString = secondsToTimeString(timer.seconds);
     return (
-        <div className="media timer-list-item my-2" onClick={goToTimerPage}>
-            <div className="mx-3 align-self-center">
+        <div className="media" onClick={goToTimerPage}>
+            <div className="media-left my-3 mx-3">
                 <FontIcon icon="hourglass-half" className="fa-3x" />
             </div>
-            <div className="media-body align-self-center">
-                <h3 className="timer-title">{timer.title}</h3>
-                <h5 className="timer-total-time">Total runtime: {hmsString}</h5>
+            <div className="media-content">
+                <div className="content">
+                    <h3 className="timer-title">{timer.title}</h3>
+                    <p>Total runtime: <strong>{hmsString}</strong></p>
+                </div>
+            </div>
+            <div className="media-right">
+                <a className="delete"></a>
             </div>
         </div>
     );

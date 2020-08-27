@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from '../../logo.svg';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import TimerListItem from './TimerListItem';
@@ -25,28 +24,28 @@ export default function TimerList() {
     }
 
     return (
-        <div className="page container">
-            <div className="d-flex align-items-center p-3 my-3 bg-secondary rounded shadow-sm">
-                {/* TODO: switch with FontAwesome icon that's closer to a timer */}
-                <img className="mr-3" src={logo} alt="" width="48" height="48" />
-                <div className="lh-100">
-                    <h3 className="mb-0 text-white lh-100">All Timers</h3>
+        <div id="timer-list-page">
+            <div className="panel is-primary">
+                <div className="panel-heading has-text-centered">All Timers</div>
+                <div className="my-3">
+                    {allTimers.length > 0
+                        ? renderTimers()
+                        : <div className="panel-block has-text-centered">
+                            <h6>No timers found; please add one!</h6>
+                        </div>
+                    }
+                    {allTimers.length > 0 &&
+                        <div className="panel-block">
+                            <a role="button" className="is-pulled-right has-text-danger" onClick={clearTimers}>Clear all</a>
+                        </div>
+                    }
                 </div>
-            </div>
-
-            <div className="my-3 p-3 bg-white rounded shadow-sm">
-                {allTimers.length > 0
-                    ? renderTimers()
-                    : <h6 className="text-center">No timers found; please add one!</h6>
-                }
-                {allTimers.length > 0 &&
-                    <small className="d-block text-right mt-3">
-                        <a href="#" className="text-red" onClick={clearTimers}>Clear all</a>
-                    </small>
-                }
-            </div>
-            <div className="my-3 p-3 bg-white rounded shadow-sm">
-                <button type="button" onClick={goToAddTimerRoute} className="btn btn-lg btn-primary btn-block">Add New</button>
+                <div className="panel-block">
+                    <button onClick={goToAddTimerRoute}
+                        className="button is-primary is-outlined is-fullwidth">
+                        Add New Timer
+                    </button>
+                </div>
             </div>
         </div>
     );

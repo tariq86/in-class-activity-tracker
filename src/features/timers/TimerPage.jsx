@@ -9,6 +9,8 @@ import { flashHueLightGroup } from '../hue/hue-api';
 import Flipper from '../../app/Flipper';
 import ReactMarkdown from 'react-markdown';
 
+import './Timer.scss';
+
 /**
  * Render the Timer page
  * Route: /timers/{id}

@@ -3,12 +3,11 @@ import logo from '../logo.svg';
 
 export default function HomePage() {
     return (
-        <div className="page">
-            <header className="text-center">
-                <img src={logo} className="app-logo fa-spin" alt="logo" width="512" height="512" />
-                <h1>Tariq's Time Tracker</h1>
-                <p>It's really more of a fancy countdown timer than a time tracker, but I already named the repo :/</p>
-            </header>
+        <div id="home-page">
+            <div className="box has-text-centered">
+                <img src={logo} className="image app-logo fa-spin" alt="logo" width="512" height="512" />
+                <h1>In-Class Activity Tracker (iCAT)</h1>
+            </div>
         </div>
     );
 }

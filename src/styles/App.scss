@@ -1,18 +1,8 @@
 // Import Bulma first!
 @import "~bulma/bulma";
 
-.jumbotron-header-btn {
-    display: inline;
-    position: relative;
-    top: -2rem;
-}
-
-.jumbotron-header-btn.left {
-    left: -50%;
-}
-
-.jumbotron-header-btn.right {
-    right: -50%;
+.media {
+    padding: 1rem;
 }
 
 /* Page Transition animation classes */
@@ -44,26 +34,11 @@
     transition: opacity 300ms, transform 300ms;
 }
 
-/*
-Hide overflow to prevent scrollbar from popping up during transitions
-NOTE: we may have to make this more specific if it starts hiding legit
-content, but nothing right now requires vertical scrolling anyways
- */
-body {
-    overflow-x: hidden;
-}
-
-.btn-xl {
-    padding: 0.75rem 1.5rem;
-    font-size: 1.5rem;
-    line-height: 1.75;
-    border-radius: 0.5rem;
-}
-
 .app-logo {
     width: 256px;
     height: 256px;
     animation: spin 60s infinite linear;
+    margin: 1rem auto;
 }
 
 @keyframes spin {
