@@ -189,19 +189,17 @@ export default function TimerPage() {
                 <div className="card-header" style={{ alignItems: 'center' }}>
                     <button type="button"
                         onClick={goToAllTimersRoute}
-                        className="button is-info is-small">
+                        className="button is-info">
                         <span className="icon">
                             <FontIcon icon="arrow-left" />
                         </span>
-                        <span>Back</span>
                     </button>
                     <p className="card-header-title" style={{ justifyContent: 'center' }}>
                         {timer.title}
                     </p>
                     <button type="button"
                         onClick={deleteTimer}
-                        className="button is-danger is-small is-right">
-                        <span>Delete</span>
+                        className="button is-danger is-right">
                         <span className="icon">
                             <FontIcon icon="trash" />
                         </span>
