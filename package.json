@@ -2,6 +2,15 @@
   "name": "in-class-activity-tracker",
   "version": "0.1.0",
   "private": true,
+  "author": "Tariq86",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tariq86/in-class-activity-tracker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tariq86/in-class-activity-tracker/issues"
+  },
   "devDependencies": {
     "babel-plugin-prismjs": "^2.0.1"
   },
@@ -37,6 +46,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "proxy": "http://localhost:3001",
   "eslintConfig": {
     "extends": "react-app"
   },
