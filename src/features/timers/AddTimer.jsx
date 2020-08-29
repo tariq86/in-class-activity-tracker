@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { addTimer } from './timersSlice';
 import { showModal, showToast } from '../../global/alertFunctions';
 import { getHueLightGroups } from '../hue/hue-api';
+import { isSlackEnabled } from '../slack/slack-api';
 
 export default function AddTimerPage() {
     const [formData, setFormData] = useState({
@@ -14,6 +15,7 @@ export default function AddTimerPage() {
         title: '',
         message: '',
         hueAlertGroup: '',
+        sendSlackMessage: false,
     });
     const [hueAlertGroup, setHueAlertGroup] = useState(false);
     const dispatch = useDispatch();
@@ -44,6 +46,7 @@ export default function AddTimerPage() {
             seconds: totalSeconds,
             title: formData.title,
             message: formData.message,
+            sendSlackMessage: formData.sendSlackMessage,
         }
         if (parseInt(hueAlertGroup) > 0) {
             payload.hueAlertGroup = parseInt(hueAlertGroup);
@@ -175,6 +178,15 @@ export default function AddTimerPage() {
                         </div>
                         <small id="message-help"
                             className="is-size-7">Try entering some Markdown!</small>
+                    </div>
+                    <div className="field">
+                        <label className="checkbox">
+                            <input type="checkbox"
+                                disabled={isSlackEnabled() === false}
+                                value={formData.sendSlackMessage}
+                                onChange={onInputChanged} />
+                                Send Slack Message?
+                        </label>
                     </div>
                     <button className="button is-large is-success is-fullwidth"
                         type="submit">
