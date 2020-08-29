@@ -27,10 +27,18 @@ var code = "Testing";
     id: "abc123",
     active: false,
     seconds: 5,
-    title: "5 seconds w/ flashy lights :)",
+    title: "5 seconds w/ Hue",
     message: null,
     hueAlertGroup: 2
-  }],
+  },
+  {
+    id: "a1b2c3",
+    active: false,
+    seconds: 10,
+    title: "10s + Slack",
+    sendSlackMessage: true,
+  },
+  ],
   active: null,
 };
 

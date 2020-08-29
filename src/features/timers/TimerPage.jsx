@@ -10,6 +10,7 @@ import Flipper from '../../app/Flipper';
 import Markdowner from '../../app/Markdowner';
 
 import './Timer.scss';
+import { sendSlackAlert } from '../slack/slack-api';
 
 /**
  * Render the Timer page
@@ -112,6 +113,9 @@ export default function TimerPage() {
         }
         setIsActive(false);
         setCountdownCompleted(true);
+        if (timer.sendSlackMessage) {
+            sendSlackAlert(`Timer \`${timer.title}\` complete!`);
+        }
         if (timer.hueAlertGroup) {
             flashHueLightGroup(timer.hueAlertGroup);
         }
@@ -139,19 +143,22 @@ export default function TimerPage() {
                     type="button"
                     onClick={startCountdownTimer}
                     disabled={isActive}>
-                    <FontIcon icon="play" />&nbsp;&nbsp;Start
+                    <FontIcon icon="play" />
+                    &nbsp;&nbsp;&nbsp;Start
                 </button>
                 <button className="button is-info is-large"
                     type="button"
                     onClick={pauseCountdownTimer}
                     disabled={!isActive}>
-                    <FontIcon icon="pause" />&nbsp;&nbsp;Pause
+                    <FontIcon icon="pause" />
+                    &nbsp;&nbsp;&nbsp;Pause
                 </button>
                 <button className="button is-danger is-large"
                     type="button"
                     onClick={resetCountdownTimer}
                     disabled={!isActive}>
-                    <FontIcon icon="redo" />&nbsp;&nbsp;Reset
+                    <FontIcon icon="redo" />
+                    &nbsp;&nbsp;&nbsp;Reset
                 </button>
             </div>
             <div className="columns">
@@ -174,13 +181,17 @@ export default function TimerPage() {
                     <button className="button is-success is-large"
                         type="button"
                         onClick={resetCountdownTimer}>
-                        <span className="icon">
-                            <FontIcon icon="redo" />
-                        </span>
+                        <FontIcon icon="redo" />
                         <span>Let's do that again!</span>
                     </button>
                 </div>
             </div>
+        </div>
+    );
+    const slackEnabledHtml = (
+        <div id="slack-enabled-message" className="has-text-success">
+            <FontIcon icon={["fab", "slack"]} />
+            Slack alert enabled!
         </div>
     );
     return (
@@ -190,9 +201,7 @@ export default function TimerPage() {
                     <button type="button"
                         onClick={goToAllTimersRoute}
                         className="button is-info">
-                        <span className="icon">
-                            <FontIcon icon="arrow-left" />
-                        </span>
+                        <FontIcon icon="arrow-left" />
                     </button>
                     <p className="card-header-title" style={{ justifyContent: 'center' }}>
                         {timer.title}
@@ -200,13 +209,12 @@ export default function TimerPage() {
                     <button type="button"
                         onClick={deleteTimer}
                         className="button is-danger is-right">
-                        <span className="icon">
-                            <FontIcon icon="trash" />
-                        </span>
+                        <FontIcon icon="trash" />
                     </button>
                 </div>
                 <div className="card-content">
                     <Flipper flipped={countdownCompleted} front={timerWithControls} back={timerCompleteDisplay} />
+                    {timer.sendSlackMessage && slackEnabledHtml}
                     {timer.message && <Markdowner source={timer.message} />}
                 </div>
             </div>

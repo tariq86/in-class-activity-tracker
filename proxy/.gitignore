@@ -1,0 +1,5 @@
+# NPM Modules
+node_modules/
+
+# Nodemon config
+nodemon.json
