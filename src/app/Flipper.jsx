@@ -3,7 +3,7 @@ import '../styles/Flipper.scss';
 
 export default function Flipper({ flipped, front, back }) {
     return (
-        <div className={`flip-container${flipped ? "flipped" : ""}`}
+        <div className={`flip-container ${flipped ? "flipped" : ""}`}
             role="group"
             name="flipper">
             <div className="flipper">
