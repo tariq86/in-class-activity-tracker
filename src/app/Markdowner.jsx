@@ -8,7 +8,10 @@ export default function Markdowner({ source }) {
         Prism.highlightAllUnder(document.querySelector('#react-markdown-container'));
     }, []);
     return (
-        <div id="react-markdown-container" className="markdown-container">
+        <div id="react-markdown-container"
+            className="markdown-container"
+            role="article"
+            aria-label="markdown-content">
             <ReactMarkdown source={source} />
         </div>
     )
