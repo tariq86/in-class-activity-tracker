@@ -18,6 +18,7 @@ export default function RouteSwitcher() {
                     <Route exact path="/timers" children={<TimerList />} />
                     <Route exact path="/hue-bridge" children={<BridgeInfoPage />} />
                     <Route exact path="/" children={<HomePage />} />
+                    <Route path="*">File Not Found</Route>
                 </Switch>
             </CSSTransition>
         </TransitionGroup>
