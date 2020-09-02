@@ -13,7 +13,7 @@ export default function NavBar() {
                 </a>
                 <span role="button"
                     className={`navbar-burger burger ${isActive ? 'is-active' : ''}`}
-                    aria-label="menu"
+                    aria-label="Menu Toggle"
                     aria-expanded="false"
                     data-target="main-navbar"
                     onClick={toggleNavbar}>
@@ -24,13 +24,13 @@ export default function NavBar() {
             </div>
             <div id="main-navbar" className={`navbar-menu ${isActive ? 'is-active' : ''}`}>
                 <div className="navbar-start">
-                    <NavLink to="/" className="navbar-item" activeClassName="active" exact>
+                    <NavLink to="/" className="navbar-item" activeClassName="active" role="link" exact>
                         Home
                     </NavLink>
-                    <NavLink to="/timers" className="navbar-item" activeClassName="active" exact={true}>
+                    <NavLink to="/timers" className="navbar-item" activeClassName="active" role="link" exact={true}>
                         Timers
                     </NavLink>
-                    <NavLink to="/hue-bridge" className="navbar-item" activeClassName="active" exact={true}>
+                    <NavLink to="/hue-bridge" className="navbar-item" activeClassName="active" role="link" exact={true}>
                         Hue Bridge Info
                     </NavLink>
                 </div>
