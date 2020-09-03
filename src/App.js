@@ -4,10 +4,10 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { faSlack } from '@fortawesome/free-brands-svg-icons';
 
-import NavBar from './app/NavBar.jsx';
-import RouteSwitcher from './app/RouteSwitcher.jsx';
+import NavBar from './components/NavBar/NavBar';
+import RouteSwitcher from './components/RouteSwitcher/RouteSwitcher';
 
-import './styles/App.scss';
+import './App.scss';
 
 library.add(fas);
 library.add(faSlack);

@@ -3,9 +3,11 @@ import { useDispatch } from 'react-redux';
 import { nanoid } from '@reduxjs/toolkit';
 import { useHistory } from 'react-router-dom';
 import { addTimer } from './timersSlice';
+import { setHueGroups } from '../hue/hueSlice';
 import { showModal, showToast } from '../../global/alertFunctions';
-import { getHueLightGroups } from '../hue/hue-api';
-import { isSlackEnabled } from '../slack/slack-api';
+import HueHub from '../hue/hue-hub';
+import SlackClient from '../slack/slack-api';
+import FontIcon from '../../components/FontIcon/FontIcon.jsx';
 
 export default function AddTimerPage() {
     const [formData, setFormData] = useState({
@@ -67,8 +69,7 @@ export default function AddTimerPage() {
         console.debug("Total Seconds: ", total);
         return total;
     };
-
-    const builGroupdSelectOptions = (allGroups) => {
+    const builGroupSelectOptions = (allGroups) => {
         const options = {};
         for (const prop in allGroups) {
             if (allGroups.hasOwnProperty(prop)) {
@@ -77,16 +78,16 @@ export default function AddTimerPage() {
         }
         return options;
     }
-
     /**
      * Prompt the user to select a Hue group
      */
     const promptForHueGroup = async () => {
-        const allHueGroups = await getHueLightGroups();
+        const allHueGroups = await new HueHub().getLightGroups();
         if (Object.keys(allHueGroups).length === 0) {
             return;
         }
-        const inputOptions = builGroupdSelectOptions(allHueGroups);
+        dispatch(setHueGroups(allHueGroups));
+        const inputOptions = builGroupSelectOptions(allHueGroups);
         console.log("inputOptions: ", inputOptions);
         const { value: group } = await showModal('question', 'Select Light Group', {
             input: 'select',
@@ -100,11 +101,30 @@ export default function AddTimerPage() {
             setHueAlertGroup(group);
         }
     };
+    /**
+     * Go to the "All Timers" route
+     * @returns {null}
+     */
+    const goToAllTimersRoute = () => {
+        history.push('/timers');
+        return null;
+    };
     return (
         <div className="page has-text-centered">
             <div className="panel is-success">
                 <div className="panel-heading">
-                    Create New Activity
+                    <div className="columns" style={{ alignItems: "center" }}>
+                        <div className="panel-heading-button column is-narrow">
+                            <button type="button"
+                                onClick={goToAllTimersRoute}
+                                className="button is-link is-inverted is-outlined">
+                                <FontIcon icon="arrow-left" />
+                            </button>
+                        </div>
+                        <div className="panel-heading-title column">
+                            Create New Activity
+                        </div>
+                    </div>
                 </div>
                 <form className="timer-form" onSubmit={createTimer}>
                     <label htmlFor="hours" className="label">Enter Time</label>
@@ -141,14 +161,22 @@ export default function AddTimerPage() {
                         Total Second(s): {calculateTotalSeconds()}
                     </small>
                     <div className="columns my-2">
-                        <div className="column">
-                            <button
-                                type="button"
-                                onClick={promptForHueGroup}
-                                className="button is-info is-outlined">
-                                Add Hue Light Group
-                        </button>
-                        </div>
+                        {
+                            hueAlertGroup === false ? (
+                                <div className="column">
+                                    <button
+                                        type="button"
+                                        onClick={promptForHueGroup}
+                                        className="button is-info is-outlined">
+                                        Add Hue Light Group
+                                    </button>
+                                </div>
+                            ) : (
+                                    <div className="column">
+                                        <h3>Selected Group: {hueAlertGroup}</h3>
+                                    </div>
+                                )
+                        }
                     </div>
                     <div className="field">
                         <label htmlFor="title" className="label">Title</label>
@@ -182,7 +210,7 @@ export default function AddTimerPage() {
                     <div className="field">
                         <label className="checkbox">
                             <input type="checkbox"
-                                disabled={isSlackEnabled() === false}
+                                disabled={new HueHub().isEnabled() === false}
                                 value={formData.sendSlackMessage}
                                 onChange={onInputChanged} />
                                 Send Slack Message?

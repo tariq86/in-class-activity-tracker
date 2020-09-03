@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { secondsToTimeString } from '../../global/timeFunctions';
 import { useDispatch } from 'react-redux';
 import { removeTimer } from './timersSlice';
-import FontIcon from '../../app/FontIcon';
+import FontIcon from '../../components/FontIcon/FontIcon';
 
 export default function TimerListItem({ timer }) {
     const history = useHistory();
@@ -19,20 +19,20 @@ export default function TimerListItem({ timer }) {
     };
     const hmsString = secondsToTimeString(timer.seconds);
     return (
-        <div className="media" onClick={goToTimerPage}>
-            <div className="media-left my-3 mx-3">
-                <FontIcon icon="hourglass-half" className="fa-3x" />
-            </div>
-            <div className="media-content">
-                <div className="content">
+        <div className="timer-list-item" onClick={goToTimerPage}>
+            <div className="columns" style={{ alignItems: "center" }}>
+                <div className="column is-narrow">
+                    <FontIcon icon="hourglass-half" className="fa-2x" />
+                </div>
+                <div className="column">
                     <h3 className="timer-title">{timer.title}</h3>
                     <p>Total runtime: <strong>{hmsString}</strong></p>
                 </div>
-            </div>
-            <div className="media-right">
-                <button className="delete" onClick={deleteTimer}>
-                    <span className="is-sr-only">Delete</span>
-                </button>
+                <div className="column is-narrow">
+                    <button type="button" className="button is-outlined is-danger" onClick={deleteTimer}>
+                        <FontIcon icon="trash" />
+                    </button>
+                </div>
             </div>
         </div>
     );

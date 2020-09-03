@@ -1,33 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setAllLamps, setAllGroups } from './hueSlice';
-import { flashHueLightGroup, getHueBridge, getHueLightGroups } from './hue-api';
+import { fetchHueLights, fetchHueHubInfo, fetchHueLightGroups } from './hueSlice';
+import HueHub from './hue-hub';
+import { showToast } from '../../global/alertFunctions';
 
 export default function BridgeInfoPage() {
-    const [activeBridge, setActiveBridge] = useState();
     const [selectedGroup, setSelectedGroup] = useState(0);
+    const [selectedLight, setSelectedLight] = useState(0);
     const dispatch = useDispatch();
 
     // Get all needed data from the store from the store
-    const allLamps = useSelector(state => state.hue.lamps);
+    const allLights = useSelector(state => state.hue.lights);
     const allGroups = useSelector(state => state.hue.groups);
-    useEffect(() => {
-        const loadBridge = async () => {
-            console.log('No bridge info loaded yet, loading bridge info now');
-            const hueBridge = await getHueBridge();
-            setActiveBridge(hueBridge);
-        }
-        if (!activeBridge) {
-            loadBridge();
-        }
-    }, [activeBridge]);
+    const bridgeConfig = useSelector(state => state.hue.config);
+    const bridgeApiUrl = useSelector(state => state.hue.apiUrl);
 
-    if (!activeBridge) {
+    let isLoaded = false;
+    if (Object.keys(bridgeConfig).length > 0) {
+        isLoaded = true;
+    }
+
+    if (!isLoaded) {
+        dispatch(fetchHueHubInfo());
         return (
             <div className="page container">
                 <div className="card">
                     <div className="card-content has-text-centered">
-                        <h1 className="title">Loading...</h1>
+                        <h1 className="title">Connecting...</h1>
                     </div>
                 </div>
             </div>
@@ -35,72 +34,95 @@ export default function BridgeInfoPage() {
     }
 
     const syncBridgeLights = async () => {
-        const lamps = await activeBridge.getLamps();
-        dispatch(setAllLamps(lamps));
+        dispatch(fetchHueLights());
     }
 
     const syncBridgeGroups = async () => {
-        const groups = await getHueLightGroups();
-        dispatch(setAllGroups(groups));
+        dispatch(fetchHueLightGroups());
     }
 
     const testBridgeConnection = async () => {
-        flashHueLightGroup(selectedGroup);
+        if (selectedLight) {
+            showToast('info', `I can't communicate with specific lights...yet :)`);
+        }
+        await new HueHub().flashLightGroup(selectedGroup);
     }
 
     const numGroups = Object.keys(allGroups).length;
+    const numLights = Object.keys(allLights).length;
 
     const groupSelectOptions = Object.keys(allGroups).map(key => <option value={key} key={key}>{allGroups[key].name}</option>)
+    const lightSelectOptions = Object.keys(allLights).map(key => <option value={key} key={key}>{allLights[key].name}</option>)
     return (
         <div className="page container">
             <div className="panel is-info">
                 <div className="panel-heading has-text-centered">
-                    <h3 className="title">Hue Bridge Info</h3>
+                    <h3>Hue Bridge Info</h3>
                 </div>
                 <div className="panel-block">
                     <div className="column has-text-centered">
-                        <p><strong>Bridge API URL:</strong>&nbsp;{activeBridge.baseApiUrl}</p>
+                        <p><strong>Bridge API URL:</strong>&nbsp;{bridgeApiUrl}</p>
                     </div>
                 </div>
                 <div className="my-4">
                     <div className="columns has-text-centered">
                         <div className="column column">
-                            Total # of Lamps: <strong>{allLamps.length}</strong><br />
+                            Total # of Lamps: <strong>{numLights}</strong><br />
                             <button name="test-group"
                                 onClick={syncBridgeLights}
-                                disabled={allLamps.length > 0}
-                                className="button is-primary mt-2">
+                                disabled={numLights > 0}
+                                className="button is-primary mt-2 is-large">
                                 Sync Lamps
-                        </button>
+                            </button>
                         </div>
                         <div className="column column">
                             Total # of Groups: <strong>{numGroups}</strong><br />
                             <button name="test-group"
                                 onClick={syncBridgeGroups}
                                 disabled={numGroups > 0}
-                                className="button is-primary mt-2">
+                                className="button is-primary mt-2 is-large">
                                 Sync Groups
-                        </button>
+                            </button>
                         </div>
                     </div>
                 </div>
-                {numGroups === 0 &&
+                {(numGroups === 0 && numLights === 0) &&
                     <div className="columns">
                         <div className="column has-text-centered">
-                            <small>Please click "Sync Groups" above to sync all light groups!</small>
+                            <small>Please click "Sync Groups" or "Sync Lamps" above to sync!</small>
                         </div>
                     </div>
                 }
-                <div className="panel-block">
-                    <div className="select mx-3 my-3 is-fullwidth">
-                        <select
-                            value={selectedGroup}
-                            onChange={e => setSelectedGroup(e.target.value)}
-                            disabled={numGroups === 0}>
-                            <option>Select a group to test with</option>
-                            {groupSelectOptions}
-                        </select>
-                    </div>
+                <div className="panel-block columns">
+                    {
+                        numLights > 0 && (
+                            <div className="column">
+                                <div className="select my-3 is-fullwidth is-large">
+                                    <select
+                                        value={selectedLight}
+                                        onChange={e => setSelectedLight(e.target.value)}>
+                                        <option>Select a light to test with</option>
+                                        {lightSelectOptions}
+                                    </select>
+                                </div>
+                            </div>
+                        )
+                    }
+                    {
+                        numGroups > 0 && (
+                            <div className="column">
+                                <div className="select my-3 is-fullwidth is-large">
+                                    <select
+                                        value={selectedGroup}
+                                        onChange={e => setSelectedGroup(e.target.value)}
+                                        disabled={numGroups === 0}>
+                                        <option>Select a group to test with</option>
+                                        {groupSelectOptions}
+                                    </select>
+                                </div>
+                            </div>
+                        )
+                    }
                 </div>
                 <div className="panel-block">
                     <button type="button"
