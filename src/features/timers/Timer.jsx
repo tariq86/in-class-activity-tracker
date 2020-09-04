@@ -16,7 +16,7 @@ import SlackClient from '../slack/slack-api';
  * Render the Timer page
  * Route: /timers/{id}
  */
-export default function TimerPage() {
+export default function Timer() {
     // Initial setup
     const [timerKeyIndex, setTimerKeyIndex] = useState(0);
     const [isActive, setIsActive] = useState(false);
