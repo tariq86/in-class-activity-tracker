@@ -24,9 +24,11 @@ export default function TimerList() {
     }
 
     return (
-        <div id="timer-list-page">
+        <div id="timer-list-page" className="page container">
             <div className="panel is-info">
-                <div className="panel-heading has-text-centered">All Timers</div>
+                <div className="panel-heading has-text-centered">
+                    <h3>All Timers</h3>
+                </div>
                 <div className="my-3">
                     {allTimers.length > 0
                         ? renderTimers()

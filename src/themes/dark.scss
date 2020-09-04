@@ -1,0 +1,68 @@
+// TODO: Update Bulma colors here
+// @see https://bulma.io/documentation/customize/with-node-sass/
+body.theme-dark {
+  @import "~@sweetalert2/theme-dark/dark.scss";
+  background: url("/assets/images/double-bubble-dark.png") repeat;
+
+  .title {
+    color: #cacaca;
+  }
+
+  .panel-block {
+    color: #cacaca;
+  }
+
+  strong {
+    color: #cacaca;
+  }
+
+  label {
+    color: #cacaca;
+  }
+
+  .input,
+  .textarea,
+  .select select {
+    background-color: rgba(54, 54, 54, 1);
+    color: #fff;
+    &::placeholder {
+      color: #999999;
+    }
+  }
+
+  .checkbox {
+    &:hover {
+      color: #999999;
+    }
+  }
+
+  a {
+    color: aqua;
+  }
+
+  .box,
+  .card,
+  .panel {
+    .card-header-title {
+      color: #ffffff;
+    }
+    background: rgba(54, 54, 54, 1);
+    color: #ffffff;
+  }
+
+  .timer-list-item {
+    background: rgba(54, 54, 54, 1);
+
+    &:hover {
+      background: #222222;
+    }
+  }
+
+  #timer-display {
+    div[aria-label="Countdown timer"] {
+      background: #333333;
+      border-radius: 100px;
+      text-shadow: 0 1px 1px #888888;
+    }
+  }
+}

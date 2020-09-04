@@ -41,6 +41,7 @@ export default function TimerDisplay({ totalSeconds, isActive, onComplete, activ
                 colors={timerColors}
                 duration={hourSeconds}
                 initialRemainingTime={totalSeconds % hourSeconds}
+                className="banana"
                 onComplete={totalElapsedTime => [
                     totalSeconds - totalElapsedTime > minuteSeconds
                 ]}>

@@ -210,7 +210,7 @@ export default function AddTimerPage() {
                     <div className="field">
                         <label className="checkbox">
                             <input type="checkbox"
-                                disabled={new HueHub().isEnabled() === false}
+                                disabled={new SlackClient().isEnabled() === false}
                                 value={formData.sendSlackMessage}
                                 onChange={onInputChanged} />
                                 Send Slack Message?

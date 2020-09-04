@@ -69,3 +69,10 @@
     margin-top: 1rem;
   }
 }
+
+#timer-display {
+  div[aria-label="Countdown timer"] {
+    background: #cacaca;
+    border-radius: 100px;
+  }
+}

@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import logo from '../../logo.svg';
+import FontIcon from '../FontIcon/FontIcon';
+import { toggleTheme } from '../../app/settingSlice';
 
 export default function NavBar() {
     const [isActive, setIsActive] = useState(false);
+    const activeTheme = useSelector(state => state.settings.theme);
     const toggleNavbar = () => setIsActive(!isActive);
+    const dispatch = useDispatch();
     return (
-        <nav className="navbar is-fixed-bottom" role="navigation" aria-label="Main Navigation">
+        <nav className={`navbar is-fixed-bottom ${activeTheme === 'dark' ? 'is-dark' : 'is-light'}`} role="navigation" aria-label="Main Navigation">
             <div className="navbar-brand">
                 <a className="navbar-item" href="/">
                     <img src={logo} className="navbar-logo" alt="logo" width="100" height="100" />
@@ -33,6 +38,18 @@ export default function NavBar() {
                     <NavLink to="/hue-bridge" className="navbar-item" activeClassName="active" role="link" exact={true}>
                         Hue Bridge Info
                     </NavLink>
+                </div>
+                <div className="navbar-end">
+                    <div className="navbar-item">
+                        <div className="buttons">
+                            <button type="button"
+                                id="toggle-theme-button"
+                                className={`button ${activeTheme === 'light' ? 'is-dark' : 'is-light'}`}
+                                onClick={() => dispatch(toggleTheme())}>
+                                <FontIcon icon={activeTheme === 'light' ? 'moon' : 'sun'} />
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </nav>

@@ -161,8 +161,11 @@ export default function TimerPage() {
                 </button>
             </div>
             <div className="columns">
-                <div className="column has-text-centered">
-                    Timer will complete at:<br /><strong>{getCompletionTime()}</strong>
+                <div className="column has-text-right">
+                    Timer will complete at:
+                </div>
+                <div className="column has-text-left">
+                    <strong>{getCompletionTime()}</strong>
                 </div>
             </div>
         </div>
@@ -199,7 +202,7 @@ export default function TimerPage() {
                 <div className="card-header" style={{ alignItems: 'center' }}>
                     <button type="button"
                         onClick={goToAllTimersRoute}
-                        className="button is-info is-large is-inverted">
+                        className="button is-info is-large is-outlined">
                         <FontIcon icon="arrow-left" />
                     </button>
                     <h3 className="card-header-title" style={{ justifyContent: 'center' }}>
@@ -207,7 +210,7 @@ export default function TimerPage() {
                     </h3>
                     <button type="button"
                         onClick={deleteTimer}
-                        className="button is-danger is-large is-right is-inverted">
+                        className="button is-danger is-large is-right is-outlined">
                         <FontIcon icon="trash" />
                     </button>
                 </div>
