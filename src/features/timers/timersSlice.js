@@ -4,7 +4,7 @@ const initialState = {
   all: [{
     id: "123abc",
     active: false,
-    seconds: 62,
+    seconds: 72,
     title: "Test Timer",
     message: `
 # Hello World!
@@ -38,6 +38,12 @@ var code = "Testing";
     title: "10s + Slack",
     sendSlackMessage: true,
   },
+  {
+    id: "3c2b1a",
+    active: false,
+    seconds: 5,
+    title: "5s"
+  }
   ],
   active: null,
 };

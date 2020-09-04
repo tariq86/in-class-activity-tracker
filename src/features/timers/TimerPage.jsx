@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, useHistory, useParams } from 'react-router-dom';
-import FontIcon from '../../app/FontIcon';
+import FontIcon from '../../components/FontIcon/FontIcon';
 import TimerDisplay from './TimerDisplay';
 import { removeTimer } from './timersSlice';
-import { flashHueLightGroup } from '../hue/hue-api';
-import Flipper from '../../app/Flipper';
-import Markdowner from '../../app/Markdowner';
+import HueHub from '../hue/hue-hub';
+import Flipper from '../../components/Flipper/Flipper';
+import Markdowner from '../../components/Markdowner/Markdowner';
 
 import './Timer.scss';
-import { sendSlackAlert } from '../slack/slack-api';
+import SlackClient from '../slack/slack-api';
 
 /**
  * Render the Timer page
@@ -29,8 +29,8 @@ export default function TimerPage() {
     let totalSeconds = 0;
     // Get the current timer from the store
     let timer = useSelector(state => {
-        return state.timers.all.find(timer => {
-            return timer.id === id;
+        return state.timers.all.find(t => {
+            return t.id === id;
         });
     });
     /**
@@ -114,18 +114,17 @@ export default function TimerPage() {
         setIsActive(false);
         setCountdownCompleted(true);
         if (timer.sendSlackMessage) {
-            sendSlackAlert(`Timer \`${timer.title}\` complete!`);
+            new SlackClient().sendMessage(`Timer \`${timer.title}\` complete!`);
         }
         if (timer.hueAlertGroup) {
-            flashHueLightGroup(timer.hueAlertGroup);
+            new HueHub().flashLightGroup(timer.hueAlertGroup);
         }
     }
     /**
      * Delete the current timer from the store
      */
     const deleteTimer = () => {
-        const id = timer.id;
-        dispatch(removeTimer({ id }));
+        dispatch(removeTimer({ id: timer.id }));
         goToAllTimersRoute();
     };
     // TODO: is this the best way to wait for the timer to load from the redux store?
@@ -162,8 +161,11 @@ export default function TimerPage() {
                 </button>
             </div>
             <div className="columns">
-                <div className="column has-text-centered">
-                    Timer will complete at:<br /><strong>{getCompletionTime()}</strong>
+                <div className="column has-text-right">
+                    Timer will complete at:
+                </div>
+                <div className="column has-text-left">
+                    <strong>{getCompletionTime()}</strong>
                 </div>
             </div>
         </div>
@@ -200,15 +202,15 @@ export default function TimerPage() {
                 <div className="card-header" style={{ alignItems: 'center' }}>
                     <button type="button"
                         onClick={goToAllTimersRoute}
-                        className="button is-info">
+                        className="button is-info is-large is-outlined">
                         <FontIcon icon="arrow-left" />
                     </button>
-                    <p className="card-header-title" style={{ justifyContent: 'center' }}>
+                    <h3 className="card-header-title" style={{ justifyContent: 'center' }}>
                         {timer.title}
-                    </p>
+                    </h3>
                     <button type="button"
                         onClick={deleteTimer}
-                        className="button is-danger is-right">
+                        className="button is-danger is-large is-right is-outlined">
                         <FontIcon icon="trash" />
                     </button>
                 </div>

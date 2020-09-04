@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default function FontIcon(props) {
     return (
-        <span className="icon">
+        <span className="icon" role="img" aria-label="Font Icon">
             <FontAwesomeIcon {...props} />
         </span>
     );

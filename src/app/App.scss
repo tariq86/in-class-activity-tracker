@@ -1,0 +1,82 @@
+// Re-add sizing for header tags
+h1 {
+  font-size: 2rem;
+  font-weight: bold;
+}
+h2 {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+h3 {
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+h4 {
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+h5 {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+h6 {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+/* Page Transition animation classes */
+.page {
+  position: absolute;
+  left: 15px;
+  right: 15px;
+}
+
+.page-enter {
+  opacity: 0;
+  transform: scale(1.1);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.page-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.page-exit-active {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.app-logo {
+  width: 256px;
+  height: 256px;
+  animation: spinAround 60s infinite linear;
+  margin: 1rem auto;
+}
+
+body {
+  &.swal2-shown {
+    overflow: visible !important;
+  }
+  .swal2-container {
+    .swal2-content.modal-content {
+      width: 100%;
+      .swal2-select {
+        width: 100%;
+      }
+    }
+
+    .swal2-actions {
+      .button {
+        margin: 0 1rem;
+        width: 40%;
+      }
+    }
+  }
+}

@@ -2,18 +2,23 @@ import Swal from 'sweetalert2';
 
 import 'sweetalert2/src/sweetalert2.scss';
 
+/**
+ * Show a modal with the given configuration
+ * @param {String} level the alert level/type
+ * @param {String} message the message to show in the alert
+ * @param {{}} extraConfig Any extra options to pass along to SweetAlert2
+ */
 export const showModal = (level, message, extraConfig) => {
     const config = {
         icon: level,
         title: message,
         buttonsStyling: false,
-        reverseButtons: true,
         showCloseButton: true,
         customClass: {
             content: 'modal-content',
             closeButton: 'modal-close',
-            confirmButton: 'button is-success',
-            cancelButton: 'button is-danger',
+            confirmButton: 'button is-success is-large',
+            cancelButton: 'button is-danger is-large',
             input: extraConfig.input,
         },
         ...extraConfig

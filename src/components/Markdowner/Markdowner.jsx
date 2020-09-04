@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
-import '../styles/Markdowner.scss';
+import './Markdowner.scss';
 import Prism from 'prismjs';
 
 export default function Markdowner({ source }) {
@@ -8,7 +8,10 @@ export default function Markdowner({ source }) {
         Prism.highlightAllUnder(document.querySelector('#react-markdown-container'));
     }, []);
     return (
-        <div id="react-markdown-container" className="markdown-container">
+        <div id="react-markdown-container"
+            className="markdown-container"
+            role="article"
+            aria-label="markdown-content">
             <ReactMarkdown source={source} />
         </div>
     )
