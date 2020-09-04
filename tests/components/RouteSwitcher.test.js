@@ -1,6 +1,6 @@
 import React from 'react';
-import { faInit, renderWithRouter } from '../../testFns';
-import RouteSwitcher from './RouteSwitcher.jsx';
+import { faInit, renderWithRouter } from '../../src/testFns';
+import RouteSwitcher from '../../src/components/RouteSwitcher/RouteSwitcher.jsx';
 import { Provider } from 'react-redux';
 import store from './store';
 

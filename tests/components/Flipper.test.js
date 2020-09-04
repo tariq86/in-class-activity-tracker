@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import Flipper from './Flipper.jsx';
+import Flipper from '../../src/components/Flipper/Flipper.jsx';
 
 test('renders the flipper', () => {
     const { getByRole } = render(

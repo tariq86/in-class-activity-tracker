@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
-import FontIcon from './FontIcon.jsx';
+import FontIcon from '../../src/components/FontIcon/FontIcon.jsx';
 
 test('renders the font icon', () => {
     const { baseElement, getByRole } = render(

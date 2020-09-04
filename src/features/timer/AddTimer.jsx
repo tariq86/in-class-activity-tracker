@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { nanoid } from '@reduxjs/toolkit';
 import { useHistory } from 'react-router-dom';
-import { addTimer } from './timersSlice';
+import { addTimer } from './timerSlice';
 import { setHueGroups } from '../hue/hueSlice';
 import { showModal, showToast } from '../../global/alertFunctions';
 import HueHub from '../hue/hue-hub';
 import SlackClient from '../slack/slack-api';
-import FontIcon from '../../components/FontIcon/FontIcon.jsx';
+import FontIcon from '../../common/FontIcon.jsx';
+
+import './AddTimer.scss';
 
 export default function AddTimerPage() {
     const [formData, setFormData] = useState({
@@ -126,7 +128,7 @@ export default function AddTimerPage() {
                         </div>
                     </div>
                 </div>
-                <form className="timer-form" onSubmit={createTimer}>
+                <form id="timer-form" onSubmit={createTimer}>
                     <label htmlFor="hours" className="label">Enter Time</label>
                     <div id="hms-fields" className="field is-grouped is-grouped-centered">
                         <div className="control">

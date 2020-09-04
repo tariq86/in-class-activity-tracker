@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import TimerListItem from './TimerListItem';
-import { clearAllTimers } from './timersSlice';
+import { clearAllTimers } from './timerSlice';
 
 export default function TimerList() {
     const history = useHistory();
@@ -12,16 +12,6 @@ export default function TimerList() {
     const renderTimers = () => {
         return allTimers.map(timer => <TimerListItem timer={timer} key={timer.id} />)
     };
-
-    const goToAddTimerRoute = (evt) => {
-        evt.preventDefault();
-        history.push("/timers/new");
-    }
-
-    const clearTimers = (evt) => {
-        evt.preventDefault();
-        dispatch(clearAllTimers());
-    }
 
     return (
         <div id="timer-list-page" className="page container">
@@ -39,14 +29,14 @@ export default function TimerList() {
                 </div>
                 <div className="panel-block">
                     <div className="column is-10">
-                        <button onClick={goToAddTimerRoute}
+                        <button onClick={() => history.push("/timers/new")}
                             className="button is-primary is-large is-fullwidth">
                             Add New Timer
                         </button>
                     </div>
                     <div className="column">
                         <button className="button is-outlined is-large is-fullwidth is-danger"
-                            onClick={clearTimers}
+                            onClick={() => dispatch(clearAllTimers())}
                             disabled={allTimers.length <= 0}>
                             Clear all
                         </button>

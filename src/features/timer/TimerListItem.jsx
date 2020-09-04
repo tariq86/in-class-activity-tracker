@@ -2,8 +2,10 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { secondsToTimeString } from '../../global/timeFunctions';
 import { useDispatch } from 'react-redux';
-import { removeTimer } from './timersSlice';
-import FontIcon from '../../components/FontIcon/FontIcon';
+import { removeTimer } from './timerSlice';
+import FontIcon from '../../common/FontIcon';
+
+import './TimerListItem.scss';
 
 export default function TimerListItem({ timer }) {
     const history = useHistory();

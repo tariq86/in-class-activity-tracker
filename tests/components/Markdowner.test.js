@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import Markdowner from './Markdowner.jsx';
+import Markdowner from '../../src/components/Markdowner/Markdowner.jsx';
 
 
 const testMdSource = `

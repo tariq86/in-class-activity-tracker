@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, useHistory, useParams } from 'react-router-dom';
-import FontIcon from '../../components/FontIcon/FontIcon';
+import FontIcon from '../../common/FontIcon';
 import TimerDisplay from './TimerDisplay';
-import { removeTimer } from './timersSlice';
+import { removeTimer } from './timerSlice';
 import HueHub from '../hue/hue-hub';
-import Flipper from '../../components/Flipper/Flipper';
-import Markdowner from '../../components/Markdowner/Markdowner';
+import Flipper from '../../common/Flipper';
+import Markdowner from '../../common/Markdowner';
 
 import './Timer.scss';
 import SlackClient from '../slack/slack-api';

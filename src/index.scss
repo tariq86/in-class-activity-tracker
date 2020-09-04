@@ -2,8 +2,8 @@
 @import "~bulma/bulma";
 
 // Import themes
-@import "./themes/dark.scss";
-@import "./themes/light.scss";
+@import "./styles/themes/dark.scss";
+@import "./styles/themes/light.scss";
 
 html {
   overflow-y: hidden;
@@ -52,4 +52,11 @@ button {
   margin-left: 0;
   margin-right: 0;
   margin-top: 0;
+}
+
+#home-icon {
+  .icon {
+    width: auto;
+    height: auto;
+  }
 }

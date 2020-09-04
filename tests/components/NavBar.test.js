@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import NavBar from './NavBar.jsx';
+import NavBar from '../../src/components/NavBar/NavBar.jsx';
 import { BrowserRouter } from 'react-router-dom';
 
 test('renders the HTML content', () => {

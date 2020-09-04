@@ -1,10 +1,10 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import settingsReducer from './settingSlice';
-import timersReducer from '../features/timers/timersSlice';
+import appReducer from './appSlice';
+import timersReducer from '../features/timer/timerSlice';
 import hueReducer from '../features/hue/hueSlice';
 
 const rootReducer = combineReducers({
-  settings: settingsReducer,
+  app: appReducer,
   timers: timersReducer,
   hue: hueReducer,
 });

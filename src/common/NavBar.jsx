@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import logo from '../../logo.svg';
-import FontIcon from '../FontIcon/FontIcon';
-import { toggleTheme } from '../../app/settingSlice';
+import FontIcon from './FontIcon';
+import { toggleTheme } from '../app/appSlice';
+import AppLogo from './AppLogo';
 
 export default function NavBar() {
     const [isActive, setIsActive] = useState(false);
-    const activeTheme = useSelector(state => state.settings.theme);
+    const activeTheme = useSelector(state => state.app.theme);
     const toggleNavbar = () => setIsActive(!isActive);
     const dispatch = useDispatch();
     return (
         <nav className={`navbar is-fixed-bottom ${activeTheme === 'dark' ? 'is-dark' : 'is-light'}`} role="navigation" aria-label="Main Navigation">
             <div className="navbar-brand">
                 <a className="navbar-item" href="/">
-                    <img src={logo} className="navbar-logo" alt="logo" width="100" height="100" />
+                    <AppLogo />
+                    {/* <img src={logo} className="navbar-logo" alt="logo" width="100" height="100" /> */}
                 </a>
                 <span role="button"
                     className={`navbar-burger burger ${isActive ? 'is-active' : ''}`}
