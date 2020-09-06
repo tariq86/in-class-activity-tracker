@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment from "moment";
 
 /**
  * Convert the given number of seconds to a more human-friendly string,
@@ -7,32 +7,32 @@ import moment from 'moment';
  * @returns {String}
  */
 export const secondsToTimeString = (totalSeconds) => {
-    let duration = moment.duration(totalSeconds, "seconds");
-    let time = '';
-    let hours = duration.hours();
-    let minutes = duration.minutes();
-    let seconds = duration.seconds();
-    if (hours > 0) {
-        time += `${hours} hour`;
-        if (hours > 1) {
-            time += 's';
-        }
-        time += ', ';
+  let duration = moment.duration(totalSeconds, "seconds");
+  let time = "";
+  let hours = duration.hours();
+  let minutes = duration.minutes();
+  let seconds = duration.seconds();
+  if (hours > 0) {
+    time += `${hours} hour`;
+    if (hours > 1) {
+      time += "s";
     }
-    if (minutes > 0) {
-        time += `${minutes} minute`;
-        if (minutes > 1) {
-            time += 's';
-        }
-        if (seconds > 0) {
-            time += ' and ';
-        }
+    time += ", ";
+  }
+  if (minutes > 0) {
+    time += `${minutes} minute`;
+    if (minutes > 1) {
+      time += "s";
     }
     if (seconds > 0) {
-        time += `${seconds} second`;
-        if (seconds > 1) {
-            time += 's';
-        }
+      time += " and ";
     }
-    return time;
-}
+  }
+  if (seconds > 0) {
+    time += `${seconds} second`;
+    if (seconds > 1) {
+      time += "s";
+    }
+  }
+  return time;
+};

@@ -4,6 +4,11 @@ body.theme-dark {
   @import "~@sweetalert2/theme-dark/dark.scss";
   background: url("/assets/images/double-bubble-dark.png") repeat;
 
+  #main-navbar {
+    background-color: rgba(54, 54, 54, 1);
+    color: #fff;
+  }
+
   .title {
     color: #cacaca;
   }

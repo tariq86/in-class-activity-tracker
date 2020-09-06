@@ -1,12 +1,13 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  all: [{
-    id: "123abc",
-    active: false,
-    seconds: 72,
-    title: "Test Timer",
-    message: `
+  all: [
+    {
+      id: "123abc",
+      active: false,
+      seconds: 72,
+      title: "Test Timer",
+      message: `
 # Hello World!
 ## Heading 2
 ### Heading 3
@@ -21,55 +22,60 @@ var code = "Testing";
 ---
 - [ ] Checkbox 1
 - [x] Checked!
-`
-  },
-  {
-    id: "abc123",
-    active: false,
-    seconds: 5,
-    title: "5 seconds w/ Hue",
-    message: null,
-    hueAlertGroup: 2
-  },
-  {
-    id: "a1b2c3",
-    active: false,
-    seconds: 10,
-    title: "10s + Slack",
-    sendSlackMessage: true,
-  },
-  {
-    id: "3c2b1a",
-    active: false,
-    seconds: 5,
-    title: "5s"
-  }
+`,
+    },
+    {
+      id: "abc123",
+      active: false,
+      seconds: 5,
+      title: "5 seconds w/ Hue",
+      message: null,
+      hueAlertGroup: 2,
+    },
+    {
+      id: "a1b2c3",
+      active: false,
+      seconds: 10,
+      title: "10s + Slack",
+      sendSlackMessage: true,
+    },
+    {
+      id: "3c2b1a",
+      active: false,
+      seconds: 5,
+      title: "5s",
+    },
   ],
   active: null,
 };
 
 export const timerSlice = createSlice({
-  name: 'timers',
+  name: "timers",
   initialState,
   reducers: {
     addTimer: (state, action) => {
       state.all.push(action.payload);
     },
     removeTimer: (state, action) => {
-      state.all = state.all.filter(timer => timer.id !== action.payload.id);
+      state.all = state.all.filter((timer) => timer.id !== action.payload.id);
     },
     setActiveTimer: (state, action) => {
       state.active = state.all.first(action.payload.id);
     },
-    clearAllTimers: state => {
+    clearAllTimers: (state) => {
       state.all = [];
       state.active = null;
     },
   },
 });
 
-export const { addTimer, removeTimer, setActiveTimer, clearAllTimers } = timerSlice.actions;
+export const {
+  addTimer,
+  removeTimer,
+  setActiveTimer,
+  clearAllTimers,
+} = timerSlice.actions;
 
-export const selectActiveTimer = state => state.active;
+export const selectActiveTimer = (state) => state.active;
 
 export default timerSlice.reducer;
