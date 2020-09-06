@@ -8,14 +8,14 @@
  * @param {*} defaultState the default initial state for the given state key
  */
 export default function getInitialState(stateKey, defaultState) {
-    let APP_STATE = localStorage.getItem('APP_STATE');
-    if (APP_STATE) {
-        APP_STATE = JSON.parse(APP_STATE);
-        let state = APP_STATE[stateKey];
-        if (state) {
-            console.debug("Using saved app state for initial state: ", state);
-            return state;
-        }
+  let APP_STATE = localStorage.getItem("APP_STATE");
+  if (APP_STATE) {
+    APP_STATE = JSON.parse(APP_STATE);
+    let state = APP_STATE[stateKey];
+    if (state) {
+      console.debug("Using saved app state for initial state: ", state);
+      return state;
     }
-    return defaultState;
+  }
+  return defaultState;
 }

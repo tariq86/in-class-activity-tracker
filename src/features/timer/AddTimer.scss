@@ -1,0 +1,29 @@
+#timer-form {
+  padding: 1rem;
+
+  #hms-fields {
+    justify-content: center;
+    margin-bottom: 0;
+
+    .control {
+      margin-right: 0;
+      .input {
+        border-radius: 0;
+        width: 100px;
+        font-size: 24px;
+      }
+      &:first-of-type {
+        .input {
+          border-top-left-radius: 4px;
+          border-bottom-left-radius: 4px;
+        }
+      }
+      &:last-of-type {
+        .input {
+          border-top-right-radius: 4px;
+          border-bottom-right-radius: 4px;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+#countdown-timer-display {
+  font-family: "Cutive Mono", monospace;
+}
+
+#timer-display {
+  display: flex;
+  justify-content: space-around;
+  font-family: "Cutive Mono", monospace;
+  text-align: center;
+
+  .time {
+    font-size: 3rem;
+  }
+
+  div[aria-label="Countdown timer"] {
+    background: #cacaca;
+    border-radius: 100px;
+  }
+}
+
+#timer-page {
+  #react-markdown-container {
+    text-align: left;
+  }
+  .flipper {
+    height: 350px;
+  }
+}
